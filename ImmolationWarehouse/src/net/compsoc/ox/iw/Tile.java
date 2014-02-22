@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 
 /*
  * Datatype representing a single Tile
@@ -69,12 +69,19 @@ public class Tile {
 	
 	// Update the tile
 	public void update(float delta) {
+		// Update particle systems
+		if(onFire) fire.update(delta);
 	}
 	
-	// Render the tile
-	public void render(SpriteBatch batch) {
+	// Render the tile only
+	public void renderTile(SpriteBatch batch) {
 		// Draw the tile
 		sprite.draw(batch);
-		fire.draw(batch);
+	}
+	
+	// Render the particle effects only
+	public void renderParticles(SpriteBatch batch) {
+		// Draw the particles
+		if(onFire) fire.draw(batch);
 	}
 }

@@ -36,7 +36,9 @@ public class TileMap {
         		//Pass X and Y coords to Tile.
         		grid[i][j] = new Tile(tileType, j, i);
         		
-        		if(i+j%5==0) grid[i][j].setFire(true);
+        		if((i+j)%5==0) {
+        			grid[i][j].setFire(true);
+        		}
         	}
         }
 	}
@@ -56,7 +58,13 @@ public class TileMap {
 		// Render all the tiles
 		for(int r = 0; r < gridHeight; r++) {
 			for(int c = 0; c < gridWidth; c++) {
-				grid[r][c].render(batch);
+				grid[r][c].renderTile(batch);
+			}
+		}
+		// Render all tile particle effects
+		for(int r = 0; r < gridHeight; r++) {
+			for(int c = 0; c < gridWidth; c++) {
+				grid[r][c].renderParticles(batch);
 			}
 		}
 	}
