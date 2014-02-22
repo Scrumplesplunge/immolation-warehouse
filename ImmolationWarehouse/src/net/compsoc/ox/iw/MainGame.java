@@ -4,7 +4,9 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import net.compsoc.ox.iw.common.MusicManager;
 import aurelienribon.tweenengine.TweenManager;
 
@@ -14,6 +16,13 @@ public class MainGame implements ApplicationListener {
 	private GameControls controls;
 	public static MusicManager music = new MusicManager();
 	public static TweenManager tweenManager = new TweenManager();
+
+    // Global instances are literally the best of the things.
+    public static ParticleEffect fire = new ParticleEffect();
+
+    static {
+        fire.load(Gdx.files.internal("fire.p"), Gdx.files.internal("."));
+    };
 	
 	private Level demoLevel;
 	

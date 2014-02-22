@@ -12,11 +12,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 class Player {
     // Configuration.
     private static final float speed = 1.0f;
-    private static final float width = 64.0f, height = 64.0f;
 
     // Position and velocity.
     private float x, y, vx, vy;
     private float overheat = 0.0f;
+    private float delta = 1.0f;
 
     // Level reference.
     private Level level;
@@ -37,7 +37,8 @@ class Player {
         this.vy = speed;
 
         // Load the fire effect.
-        fire = new ParticleEffect();
+        fire = new ParticleEffect(MainGame.fire);
+        fire.start();
 
         // Set up the player texture and sprite.
         texture = new Texture(Gdx.files.internal("character.png"));
@@ -52,7 +53,7 @@ class Player {
 
     // Update our position.
     public void update() {
-        float delta = Gdx.graphics.getDeltaTime();
+        delta = Gdx.graphics.getDeltaTime();
         x += vx * delta;
         y += vy * delta;
     }
@@ -63,7 +64,7 @@ class Player {
         sprite.draw(batch);
 
         // Now draw the player fire.
-        
+        fire.draw(batch, delta);
     }
 
     // Change our velocity.
