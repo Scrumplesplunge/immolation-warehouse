@@ -80,7 +80,7 @@ public class MainGame implements ApplicationListener {
 	// Reposition camera
 	public static void positionCamera(float x, float y, float rotation, float zoom) {
 		camera.position.set(x, y, 0.0f);
-		camera.up.set((float)Math.sin(rotation), -(float)Math.cos(rotation), 0.0f);
+		camera.up.set(-(float)Math.sin(rotation), (float)Math.cos(rotation), 0.0f);
 		camera.zoom = zoom;
 		camera.update();
 	}
