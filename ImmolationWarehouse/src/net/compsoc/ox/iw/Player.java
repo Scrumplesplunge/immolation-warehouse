@@ -48,6 +48,7 @@ class Player {
         sprite.setScale(1.0f, 1.0f);
         sprite.setOrigin(0.5f, 0.5f);
         sprite.setPosition(x, y);
+        fire.setPosition(x, y);
     }
 
     // Update our position.
@@ -55,6 +56,9 @@ class Player {
         delta = Gdx.graphics.getDeltaTime();
         x += vx * delta;
         y += vy * delta;
+        
+        sprite.setPosition(x, y);
+        fire.setPosition(x, y);
     }
 
     // Render the player.
