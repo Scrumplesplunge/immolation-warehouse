@@ -11,6 +11,7 @@ import aurelienribon.tweenengine.TweenManager;
 public class MainGame implements ApplicationListener {
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
+	private GameControls controls;
 	public static MusicManager music = new MusicManager();
 	public static TweenManager tweenManager = new TweenManager();
 	
@@ -21,7 +22,9 @@ public class MainGame implements ApplicationListener {
 		//float w = Gdx.graphics.getWidth();
 		//float h = Gdx.graphics.getHeight();
 		
-		camera = new OrthographicCamera(512.0f, 512.0f);
+		controls = new GameControls();
+		
+		camera = new OrthographicCamera(512, 512);
 		batch = new SpriteBatch();
 		
 		demoLevel = new Level();
@@ -37,6 +40,9 @@ public class MainGame implements ApplicationListener {
 	public void render() {		
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
+		//Make sure the controls update.
+		controls.onRender();
 		
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
@@ -54,13 +60,5 @@ public class MainGame implements ApplicationListener {
 
 	@Override
 	public void resume() {
-	}
-	
-	// Reposition camera
-	public void positionCamera(float x, float y, float rotation, float zoom) {
-		camera.position.set(x, y, 0.0f);
-		camera.up.set((float)Math.cos(rotation), (float)Math.sin(rotation), 0.0f);
-		camera.zoom = zoom;
-		camera.update();
 	}
 }
