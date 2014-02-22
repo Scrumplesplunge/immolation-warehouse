@@ -21,7 +21,7 @@ public class MainGame implements ApplicationListener {
 		//float w = Gdx.graphics.getWidth();
 		//float h = Gdx.graphics.getHeight();
 		
-		camera = new OrthographicCamera(512, 512);
+		camera = new OrthographicCamera(512.0f, 512.0f);
 		batch = new SpriteBatch();
 		
 		demoLevel = new Level();
@@ -54,5 +54,13 @@ public class MainGame implements ApplicationListener {
 
 	@Override
 	public void resume() {
+	}
+	
+	// Reposition camera
+	public void positionCamera(float x, float y, float rotation, float zoom) {
+		camera.position.set(x, y, 0.0f);
+		camera.up.set((float)Math.cos(rotation), (float)Math.sin(rotation), 0.0f);
+		camera.zoom = zoom;
+		camera.update();
 	}
 }
