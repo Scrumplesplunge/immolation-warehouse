@@ -10,6 +10,11 @@ public class Level {
 	// Tilemap representing level layout
 	private TileMap map;
 	
+	public Level(String[] lines) {
+        map = new TileMap(lines);
+        
+	}
+	
 	// Constructor
 	public Level() {
 		map = new TileMap(10, 10);
