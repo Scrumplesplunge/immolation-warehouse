@@ -11,7 +11,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 class Player {
     // Configuration.
-    private static final float speed = 1.0f;
+    private static final float speed = 256.0f;
+    private static final float width = 64.0f, height = 64.0f;
 
     // Position and velocity.
     private float x, y, vx, vy;
@@ -31,8 +32,6 @@ class Player {
     // Constructor.
     public Player(Level level, float x, float y) {
         this.level = level;
-        this.x = x;
-        this.y = y;
         this.vx = 0;
         this.vy = speed;
 
@@ -48,8 +47,15 @@ class Player {
         sprite = new Sprite(region);
         sprite.setScale(1.0f, 1.0f);
         sprite.setOrigin(0.5f, 0.5f);
-        sprite.setPosition(x, y);
-        fire.setPosition(x, y);
+        
+        setPosition(x, y);
+    }
+    
+    public void setPosition(float x, float y) {
+    	this.x = x;
+    	this.y = y;
+    	sprite.setPosition(x, y);
+    	fire.setPosition(x + 0.5f * width, y + 0.5f * height);
     }
 
     // Update our position.
@@ -58,8 +64,9 @@ class Player {
         x += vx * delta;
         y += vy * delta;
         
-        sprite.setPosition(x, y);
-        fire.setPosition(x, y);
+        setPosition(x, y);
+        
+        MainGame.positionCamera(x, y, 0.0f, 1.0f);
     }
 
     // Render the player.
@@ -85,6 +92,7 @@ class Player {
     // Disposal function.
     public void dispose() {
         texture.dispose();
+        fire.dispose();
     }
 }
 
