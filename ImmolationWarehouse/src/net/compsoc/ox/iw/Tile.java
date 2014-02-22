@@ -15,14 +15,6 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 public class Tile {
 	// Static information about all tiles
 	private static final float tileWidth = 64.0f, tileHeight = 64.0f;	// Tile dimensions (pixels)
-	private static String getTileImageName(GameTileType type) {
-		// Get image name for given tile
-		switch(type) {
-		case Wall: return "wall.png";
-		case Floor: return "floor.png";
-		default: return "";
-		}
-	}
 	
 	// Graphics for this tile
 	private Texture texture;		// Texture for the sprite
@@ -34,20 +26,34 @@ public class Tile {
 	
 	// Constructor
 	public Tile(GameTileType type, int tileX, int tileY) {
-		// Initialise tile
-		// - calculate pixel position
+		// Load settings for this tile type
+		String imageFilename;
+		switch(type) {
+		case Wall:
+			imageFilename = "wall.png";
+			break;
+		case Floor:
+			imageFilename = "floor.png";
+			break;
+		default:
+			imageFilename = "";
+			break;
+		}
+		
+		// Calculate pixel position of tile
 		float posX = (float)tileX * tileWidth;
 		float posY = (float)tileY * tileHeight;
-		// - create texture
-		texture = new Texture(Gdx.files.internal(getTileImageName(type)));
+		
+		// Prepare tile graphic
+		texture = new Texture(Gdx.files.internal(imageFilename));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion region = new TextureRegion(texture, 0, 0, (int)tileWidth, (int)tileHeight);
-		// - create sprite
 		sprite = new Sprite(region);
 		sprite.setScale(1.0f, 1.0f);
 		sprite.setOrigin(0.0f, 0.0f);
 		sprite.setPosition(posX, posY);
-		// - create particle effect (turned off)
+		
+		// Prepare fire particle effect
 		fire = new ParticleEffect(MainGame.fire);
 		fire.setPosition(posX + (tileWidth*0.5f), posY + (tileHeight*0.5f));
 	}
