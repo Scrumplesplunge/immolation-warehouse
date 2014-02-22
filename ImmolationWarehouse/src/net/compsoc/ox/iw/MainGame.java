@@ -70,4 +70,12 @@ public class MainGame implements ApplicationListener {
 	@Override
 	public void resume() {
 	}
+	
+	// Reposition camera
+	public void positionCamera(float x, float y, float rotation, float zoom) {
+		camera.position.set(x, y, 0.0f);
+		camera.up.set((float)Math.cos(rotation), (float)Math.sin(rotation), 0.0f);
+		camera.zoom = zoom;
+		camera.update();
+	}
 }
