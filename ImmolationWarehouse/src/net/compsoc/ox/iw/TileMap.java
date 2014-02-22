@@ -16,7 +16,7 @@ public class TileMap {
 		// Build grid
 		this.gridWidth = gridWidth;
 		this.gridHeight = gridHeight;
-		grid = new Tile[gridWidth][gridHeight];
+		grid = new Tile[gridHeight][gridWidth];
 		
 		// Make a random level (this is debug)
 		for(int r = 0; r < gridHeight; r++) {
@@ -28,6 +28,33 @@ public class TileMap {
 				}
 			}
 		}
+	}
+	
+	//Create the tile map from a text description.
+	public TileMap(String[] lines) {
+		//Well formed level files will have at least one row, and
+        //each row will have the same number of columns.
+        gridWidth = lines[0].length();
+        gridHeight = lines.length;
+        grid = new Tile[gridWidth][gridHeight];
+        GameTileType tileType;
+        for (int i = 0; i < gridHeight; i++) {
+        	for (int j = 0; j < gridWidth; j++) {
+        		switch (lines[i].charAt(j)) {
+        		case 'w':
+        			tileType = GameTileType.Wall;
+        			break;
+        		case 'f':
+        			tileType = GameTileType.Floor;
+        			break;
+        		default:
+        			tileType = GameTileType.Wall;
+        			break;
+        		}
+        		//Pass X and Y coords to Tile.
+        		grid[i][j] = new Tile(tileType, j, i);
+        	}
+        }
 	}
 	
 	// Render the tilemap

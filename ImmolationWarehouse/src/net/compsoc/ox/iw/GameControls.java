@@ -30,6 +30,18 @@ public class GameControls implements InputProcessor, MainGameListener {
 			//Travel right.
 			xDir += 1;
 			return true;
+		case Input.Keys.UP:
+			MainGame.nudgeCamera(0, 64);
+			return true;
+		case Input.Keys.LEFT:
+			MainGame.nudgeCamera(-64, 0);
+			return true;
+		case Input.Keys.DOWN:
+			MainGame.nudgeCamera(0, -64);
+			return true;
+		case Input.Keys.RIGHT:
+			MainGame.nudgeCamera(64, 0);
+			return true;
 		}
 		return false;
 	}
@@ -116,7 +128,10 @@ public class GameControls implements InputProcessor, MainGameListener {
 	 * Set the direction the player is travelling when the frame ticks.
 	 */
 	public void onRender() {
+		//If the player is attempting to move directions, change their facing.
+		//if (xDir != 0 && yDir != 0) {
 		//MainGame.player.setVelocity(xDir, yDir);
+		// }
 		
 	}
 
