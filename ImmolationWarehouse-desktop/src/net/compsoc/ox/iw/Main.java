@@ -8,8 +8,8 @@ public class Main {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "Immolation Warehouse";
 		cfg.useGL20 = false;
-		cfg.width = 480;
-		cfg.height = 320;
+		cfg.width = 1920;
+		cfg.height = 1280;
 		
 		new LwjglApplication(new MainGame(), cfg);
 	}
