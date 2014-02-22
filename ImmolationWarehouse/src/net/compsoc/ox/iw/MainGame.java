@@ -21,7 +21,7 @@ public class MainGame implements ApplicationListener {
     public static ParticleEffect fire = new ParticleEffect();
 
     static {
-        fire.load(Gdx.files.internal("fire.p"), Gdx.files.internal("."));
+        //fire.load(Gdx.files.internal("fire.p"), Gdx.files.internal("."));
     };
 	
 	private Level demoLevel;
