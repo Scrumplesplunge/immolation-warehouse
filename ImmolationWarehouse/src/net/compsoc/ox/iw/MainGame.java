@@ -27,7 +27,7 @@ public class MainGame implements ApplicationListener {
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		
-		camera = new OrthographicCamera(512, 512 * (h/w));
+		camera = new OrthographicCamera(512, 512);
 		batch = new SpriteBatch();
 		
 		demoLevel = new Level();
