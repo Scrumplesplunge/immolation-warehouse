@@ -13,13 +13,13 @@ class Player {
     // Configuration.
     private static final float speed = 256.0f;
     private static final float overheatTime = 20.0f;
-    private static final float armCraziness = 0.0f;
+    private static final float armCraziness = 0.99f, armSpeed = 2000.0f;
     private static final float width = 64.0f, height = 64.0f, armWidth = 22.0f, armHeight = 44.0f;
     private static final float inertia = 0.01f, armInertia = 0.001f;
 
     // Position and velocity.
     private float x, y, vx, vy;
-    private float overheat = 0.0f;
+    public float overheat = 0.0f;
     private float delta;
     
     // Collisions
@@ -103,19 +103,31 @@ class Player {
     
     private float angNorm(float ang) {
     	float pi = (float)Math.PI;
-    	return ((ang + pi) % (2 * pi) + 2 * pi) % 2 * pi - pi;
+    	return ((ang + pi) % (2 * pi) + 2 * pi) % (2 * pi) - pi;
     }
 
     // Update our position.
     public void update(float delta) {
     	this.delta = delta;
     	
-    	float lerp = armInertia;
-    	
         x += vx * delta;
         y += vy * delta;
-    	leftArmAngVel = (leftArmAngVel * lerp + (1 - lerp) * angNorm(bodyAngle - leftArmAngle)) + (float)(Math.random() - 0.5) * armCraziness;
-    	rightArmAngVel = (rightArmAngVel * lerp + (1 - lerp) * angNorm(bodyAngle - rightArmAngle)) + (float)(Math.random() - 0.5) * armCraziness;
+        float leftArmAccel = 50.0f * angNorm(bodyAngle - leftArmAngle - leftArmAngVel / 15.0f);
+        float rightArmAccel = 50.0f * angNorm(bodyAngle - rightArmAngle - rightArmAngVel / 15.0f);
+        
+        float prob = 1 - (float)Math.pow(1 - armCraziness, delta);
+        if (Math.random() < prob) leftArmAccel += armSpeed * (float)(Math.random() - 0.5);
+        if (Math.random() < prob) rightArmAccel += armSpeed * (float)(Math.random() - 0.5);
+        leftArmAngVel += leftArmAccel * delta;
+        rightArmAngVel += rightArmAccel * delta;
+        
+        // Cap the velocities.
+        if (leftArmAngVel < -10.0f) leftArmAngVel = -10.0f;
+        if (leftArmAngVel > 10.0f) leftArmAngVel = 10.0f;
+        if (rightArmAngVel < -10.0f) rightArmAngVel = -10.0f;
+        if (rightArmAngVel > 10.0f) rightArmAngVel = 10.0f;
+        
+        // Update the angle.
     	leftArmAngle += leftArmAngVel * delta;
     	rightArmAngle += rightArmAngVel * delta;
         
