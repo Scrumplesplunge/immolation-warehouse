@@ -20,4 +20,9 @@ public class Level {
 		// Render the tilemap
 		map.render(batch);
 	}
+	
+	// Dispose of stuff when finished
+	public void dispose() {
+		map.dispose();
+	}
 }

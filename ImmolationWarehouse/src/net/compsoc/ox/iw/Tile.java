@@ -24,18 +24,26 @@ public class Tile {
 	}
 	
 	// State of this tile
+	private Texture texture;		// Texture for the sprite
 	private Sprite sprite;			// Sprite for this tile
 	
 	// Constructor
 	public Tile(GameTileType type, int tileX, int tileY) {
 		// Initialise tile
-		Texture texture = new Texture(Gdx.files.internal(getTileImageName(type)));
+		// - create texture
+		texture = new Texture(Gdx.files.internal(getTileImageName(type)));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		TextureRegion region = new TextureRegion(texture, 0, 0, tileWidth, tileHeight);
+		TextureRegion region = new TextureRegion(texture, 0, 0, (int)tileWidth, (int)tileHeight);
+		// - create sprite
 		sprite = new Sprite(region);
-		sprite.setScale(tileWidth, tileHeight);
+		sprite.setScale(1.0f, 1.0f);
 		sprite.setOrigin(0.0f, 0.0f);
 		sprite.setPosition((float)tileX * tileWidth, (float)tileY * tileHeight);
+	}
+	
+	// Dispose of stuff when finished
+	public void dispose() {
+		texture.dispose();
 	}
 	
 	// Render the tile

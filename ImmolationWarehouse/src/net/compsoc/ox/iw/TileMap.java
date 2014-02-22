@@ -39,4 +39,13 @@ public class TileMap {
 			}
 		}
 	}
+	
+	// Dispose of stuff when finished
+	public void dispose() {
+		for(int r = 0; r < gridHeight; r++) {
+			for(int c = 0; c < gridWidth; c++) {
+				grid[r][c].dispose();
+			}
+		}
+	}
 }
