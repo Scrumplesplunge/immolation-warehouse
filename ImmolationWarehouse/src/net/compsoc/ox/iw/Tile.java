@@ -21,28 +21,41 @@ public class Tile {
 	private Sprite sprite;			// Sprite for this tile
 	private ParticleEffect fire;	// FIRE
 	
+	// AABB for this tile (regardless of solidity)
+	private AABB aabb;
+	
 	// State of this tile
-	boolean onFire = false;
+	private boolean onFire = false;
+	private boolean solid = false;
+	
+	// Accessors
+	public AABB getAABB() { return aabb; }
+	public boolean isOnFire() { return onFire; }
+	public boolean isSolid() { return solid; }
 	
 	// Constructor
 	public Tile(GameTileType type, int tileX, int tileY) {
 		// Load settings for this tile type
-		String imageFilename;
+		String imageFilename = "";
 		switch(type) {
 		case Wall:
 			imageFilename = "wall.png";
+			solid = true;
 			break;
 		case Floor:
 			imageFilename = "floor.png";
+			solid = false;
 			break;
 		default:
-			imageFilename = "";
 			break;
 		}
 		
 		// Calculate pixel position of tile
 		float posX = (float)tileX * tileWidth;
 		float posY = (float)tileY * tileHeight;
+		
+		// Build AABB
+		aabb = new AABB(posX, posY, tileWidth, tileHeight);
 		
 		// Prepare tile graphic
 		texture = new Texture(Gdx.files.internal(imageFilename));

@@ -52,4 +52,10 @@ public class Level {
 	public void dispose() {
 		map.dispose();
 	}
+	
+	// Does the given AABB intersect with the level?
+	public boolean collidesWith(AABB aabb) {
+		// Collide AABB with tilemap and return result
+		return map.collidesWith(aabb);
+	}
 }
