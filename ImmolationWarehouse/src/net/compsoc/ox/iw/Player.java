@@ -21,6 +21,9 @@ class Player {
     private float x, y, vx, vy;
     private float overheat = 0.0f;
     private float delta;
+    
+    // Collisions
+    private AABB aabb;
 
     // Level reference.
     private Level level;
@@ -44,6 +47,9 @@ class Player {
         
         bodyAngle = leftArmAngle = rightArmAngle = 0.0f;
         leftArmAngVel = rightArmAngVel = 0.0f;
+        
+        // Build AABB
+        aabb = new AABB(x - 24.0f, y - 24.0f, 48.0f, 48.0f);
 
         // Load the fire effect.
         fire = new ParticleEffect(MainGame.fire);
@@ -78,6 +84,8 @@ class Player {
     public void setPosition(float x, float y) {
     	this.x = x;
     	this.y = y;
+    	aabb.x = x - (aabb.w / 2);
+    	aabb.y = y - (aabb.h / 2);
     	sprite.setPosition(x - 0.5f * width, y - 0.5f * height);
     	fire.setPosition(x, y);
     }
@@ -114,6 +122,8 @@ class Player {
         overheat += delta / overheatTime;
         
         setPosition(x, y);
+        
+        if(level.collidesWith(aabb)) System.out.println("PHASING THROUGH DA WALLS");
         
         updateSprites();
         
