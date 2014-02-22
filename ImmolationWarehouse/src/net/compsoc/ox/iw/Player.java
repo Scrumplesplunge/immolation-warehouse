@@ -60,8 +60,8 @@ class Player {
     }
 
     // Update our position.
-    public void update() {
-        delta = Gdx.graphics.getDeltaTime();
+    public void update(float delta) {
+        this.delta = delta;
         x += vx * delta;
         y += vy * delta;
         

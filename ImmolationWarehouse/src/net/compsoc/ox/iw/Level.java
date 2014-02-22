@@ -10,14 +10,14 @@ public class Level {
 	// Tilemap representing level layout
 	private TileMap map;
 	
+	// Constructor
 	public Level(String[] lines) {
         map = new TileMap(lines);
-        
 	}
 	
-	// Constructor
-	public Level() {
-		map = new TileMap(10, 10);
+	// Update the level
+	public void update(float delta) {
+		map.update(delta);
 	}
 	
 	// Render the level

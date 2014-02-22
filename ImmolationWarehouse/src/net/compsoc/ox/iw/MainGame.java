@@ -53,11 +53,13 @@ public class MainGame implements ApplicationListener {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
-		//Make sure the controls update.
+		// Update things
+		float delta = Gdx.graphics.getDeltaTime();
 		controls.onRender();
+		demoLevel.update(delta);
+		player.update(delta);
 		
-		player.update();
-		
+		// Render things
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		demoLevel.render(batch);

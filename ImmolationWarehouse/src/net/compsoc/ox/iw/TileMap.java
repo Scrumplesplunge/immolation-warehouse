@@ -12,24 +12,6 @@ public class TileMap {
 	private Tile[][] grid;		// grid[row][column]
 	
 	// Constructor
-	public TileMap(int gridWidth, int gridHeight) {
-		// Build grid
-		this.gridWidth = gridWidth;
-		this.gridHeight = gridHeight;
-		grid = new Tile[gridHeight][gridWidth];
-		
-		// Make a random level (this is debug)
-		for(int r = 0; r < gridHeight; r++) {
-			for(int c = 0; c < gridWidth; c++) {
-				if ((c + r) % 3 == 0) {
-					grid[r][c] = new Tile(GameTileType.Wall, c, r);
-				} else {
-					grid[r][c] = new Tile(GameTileType.Floor, c, r);
-				}
-			}
-		}
-	}
-	
 	//Create the tile map from a text description.
 	public TileMap(String[] lines) {
 		//Well formed level files will have at least one row, and
@@ -53,8 +35,20 @@ public class TileMap {
         		}
         		//Pass X and Y coords to Tile.
         		grid[i][j] = new Tile(tileType, j, i);
+        		
+        		if(i+j%5==0) grid[i][j].setFire(true);
         	}
         }
+	}
+	
+	// Update the tilemap
+	public void update(float delta) {
+		// Update all the tiles
+		for(int r = 0; r < gridHeight; r++) {
+			for(int c = 0; c < gridWidth; c++) {
+				grid[r][c].update(delta);
+			}
+		}
 	}
 	
 	// Render the tilemap
