@@ -27,7 +27,7 @@ public class MainGame implements ApplicationListener {
 		camera = new OrthographicCamera(512, 512);
 		batch = new SpriteBatch();
 		
-		demoLevel = new Level();
+		demoLevel = LevelFile.loadLevel("l1.iw");
 	}
 
 	@Override
