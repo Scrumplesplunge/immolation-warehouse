@@ -1,14 +1,21 @@
-import net.compsoc.ox.iw.*;
-import math;
+package	net.compsoc.ox.iw;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 
 class Player {
     // Configuration.
     private static final float speed = 1.0f;
-    private static final float width = 64.0f, height = 64.0f;
 
     // Position and velocity.
     private float x, y, vx, vy;
     private float overheat = 0.0f;
+    private float delta = 1.0f;
 
     // Level reference.
     private Level level;
@@ -29,7 +36,8 @@ class Player {
         this.vy = speed;
 
         // Load the fire effect.
-        fire = new ParticleEffect();
+        fire = new ParticleEffect(MainGame.fire);
+        fire.start();
 
         // Set up the player texture and sprite.
         texture = new Texture(Gdx.files.internal("character.png"));
@@ -44,7 +52,7 @@ class Player {
 
     // Update our position.
     public void update() {
-        float delta = Gdx.graphics.getDeltaTime();
+        delta = Gdx.graphics.getDeltaTime();
         x += vx * delta;
         y += vy * delta;
     }
@@ -55,7 +63,7 @@ class Player {
         sprite.draw(batch);
 
         // Now draw the player fire.
-        
+        fire.draw(batch, delta);
     }
 
     // Change our velocity.
@@ -64,7 +72,7 @@ class Player {
         this.vy = vy;
 
         // Scale this velocity to match the speed.
-        float mul = speed / math.sqrt(this.vx * this.vx + this.vy * this.vy);
+        float mul = speed / (float)Math.sqrt(this.vx * this.vx + this.vy * this.vy);
         this.vx *= mul;
         this.vy *= mul;
     }

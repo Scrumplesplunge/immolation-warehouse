@@ -116,7 +116,7 @@ public class GameControls implements InputProcessor, MainGameListener {
 	 * Set the direction the player is travelling when the frame ticks.
 	 */
 	public void onRender() {
-		MainGame.player.setVelocity(xDir, yDir);
+		//MainGame.player.setVelocity(xDir, yDir);
 		
 	}
 
