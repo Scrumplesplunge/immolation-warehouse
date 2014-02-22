@@ -19,17 +19,17 @@ public class MainGame implements ApplicationListener {
 
     // Global instances are literally the best of the things.
     public static ParticleEffect fire = new ParticleEffect();
-
-    static {
-        //fire.load(Gdx.files.internal("fire.p"), Gdx.files.internal("."));
-    };
 	
 	private Level demoLevel;
+	private Player daPlayerMan;
 	
 	@Override
 	public void create() {
 		//float w = Gdx.graphics.getWidth();
 		//float h = Gdx.graphics.getHeight();
+		
+		// IT'S A HACK
+		fire.load(Gdx.files.internal("fire.p"), Gdx.files.internal("."));
 		
 		controls = new GameControls();
 		
@@ -37,6 +37,7 @@ public class MainGame implements ApplicationListener {
 		batch = new SpriteBatch();
 		
 		demoLevel = new Level();
+		daPlayerMan = new Player(demoLevel, 32.0f, 32.0f);
 	}
 
 	@Override
@@ -53,9 +54,12 @@ public class MainGame implements ApplicationListener {
 		//Make sure the controls update.
 		controls.onRender();
 		
+		daPlayerMan.update();
+		
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		demoLevel.render(batch);
+		daPlayerMan.render(batch);
 		batch.end();
 	}
 
