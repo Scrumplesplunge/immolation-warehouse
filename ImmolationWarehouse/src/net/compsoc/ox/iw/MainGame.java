@@ -43,8 +43,9 @@ public class MainGame implements ApplicationListener {
 
 	@Override
 	public void dispose() {
-		demoLevel.dispose();
 		batch.dispose();
+		demoLevel.dispose();
+		fire.dispose();
 	}
 
 	@Override
