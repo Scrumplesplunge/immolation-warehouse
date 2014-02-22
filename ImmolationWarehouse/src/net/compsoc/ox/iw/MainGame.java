@@ -1,5 +1,9 @@
 package net.compsoc.ox.iw;
 
+import net.compsoc.ox.iw.common.MusicManager;
+import net.compsoc.ox.iw.common.SpriteAtlas;
+import aurelienribon.tweenengine.TweenManager;
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
@@ -16,8 +20,14 @@ public class MainGame implements ApplicationListener {
 	private Texture texture;
 	private Sprite sprite;
 	
+	public static MusicManager music;
+	public static SpriteAtlas sprites;
+	public static TweenManager tweenManager;
+	
 	@Override
-	public void create() {		
+	public void create() {
+		music = new MusicManager();
+		tweenManager = new TweenManager();
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		
