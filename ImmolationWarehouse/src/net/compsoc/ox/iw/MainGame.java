@@ -9,7 +9,7 @@ import net.compsoc.ox.iw.common.MusicManager;
 import aurelienribon.tweenengine.TweenManager;
 
 public class MainGame implements ApplicationListener {
-	private OrthographicCamera camera;
+	private static OrthographicCamera camera;
 	private SpriteBatch batch;
 	private GameControls controls;
 	public static MusicManager music = new MusicManager();
@@ -23,6 +23,7 @@ public class MainGame implements ApplicationListener {
 		//float h = Gdx.graphics.getHeight();
 		
 		controls = new GameControls();
+		Gdx.input.setInputProcessor(controls);
 		
 		camera = new OrthographicCamera(512, 512);
 		batch = new SpriteBatch();
@@ -60,5 +61,18 @@ public class MainGame implements ApplicationListener {
 
 	@Override
 	public void resume() {
+	}
+	
+	// Reposition camera
+	public static void positionCamera(float x, float y, float rotation, float zoom) {
+		camera.position.set(x, y, 0.0f);
+		camera.up.set((float)Math.sin(rotation), -(float)Math.cos(rotation), 0.0f);
+		camera.zoom = zoom;
+		camera.update();
+	}
+	
+	public static void nudgeCamera(float x, float y) {
+		camera.position.set(camera.position.x + x, camera.position.y + y, 0.0f);
+		camera.update();
 	}
 }

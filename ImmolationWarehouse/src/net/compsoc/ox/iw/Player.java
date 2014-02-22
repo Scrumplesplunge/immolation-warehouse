@@ -1,5 +1,13 @@
-import net.compsoc.ox.iw.*;
-import math;
+package net.compsoc.ox.iw;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
 
 class Player {
     // Configuration.
@@ -64,7 +72,7 @@ class Player {
         this.vy = vy;
 
         // Scale this velocity to match the speed.
-        float mul = speed / math.sqrt(this.vx * this.vx + this.vy * this.vy);
+        float mul = (float) (speed / Math.sqrt(this.vx * this.vx + this.vy * this.vy));
         this.vx *= mul;
         this.vy *= mul;
     }
