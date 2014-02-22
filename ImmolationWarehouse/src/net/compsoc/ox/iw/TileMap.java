@@ -20,7 +20,7 @@ public class TileMap {
         gridHeight = lines.length;
         grid = new Tile[gridWidth][gridHeight];
         GameTileType tileType;
-        for (int r = 0; r < gridHeight; r++) {
+        for (int r = gridHeight-1; r >= 0; r--) {
         	for (int c = 0; c < gridWidth; c++) {
         		switch (lines[r].charAt(c)) {
         		case 'w':
@@ -29,16 +29,15 @@ public class TileMap {
         		case 'f':
         			tileType = GameTileType.Floor;
         			break;
+        		case 't':
+        			tileType = GameTileType.Table;
+        			break;
         		default:
         			tileType = GameTileType.Wall;
         			break;
         		}
         		//Pass X and Y coords to Tile.
         		grid[r][c] = new Tile(tileType, c, r);
-        		
-        		if((r+c)%10==0) {
-        			grid[r][c].setFire(true);
-        		}
         	}
         }
 	}

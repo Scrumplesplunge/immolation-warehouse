@@ -25,13 +25,20 @@ public class Tile {
 	private AABB aabb;
 	
 	// State of this tile
+	private boolean flammable = true;
 	private boolean onFire = false;
 	private boolean solid = false;
+	private boolean destructable = false;
+	private int hitpoints = 0;
+	private float firedamagetick = 0.0f;
 	
 	// Accessors
 	public AABB getAABB() { return aabb; }
+	public boolean isFlammable() { return flammable; }
 	public boolean isOnFire() { return onFire; }
 	public boolean isSolid() { return solid; }
+	public boolean isDestructable() { return destructable; }
+	public int getHitPoints() { return hitpoints; }
 	
 	// Constructor
 	public Tile(GameTileType type, int tileX, int tileY) {
@@ -40,11 +47,24 @@ public class Tile {
 		switch(type) {
 		case Wall:
 			imageFilename = "wall.png";
+			flammable = true;
 			solid = true;
+			destructable = false;
+			hitpoints = 0;
 			break;
 		case Floor:
 			imageFilename = "floor.png";
+			flammable = true;
 			solid = false;
+			destructable = false;
+			hitpoints = 0;
+			break;
+		case Table:
+			imageFilename = "wall.png";
+			flammable = true;
+			solid = true;
+			destructable = true;
+			hitpoints = 128;
 			break;
 		default:
 			break;
@@ -76,20 +96,36 @@ public class Tile {
 		texture.dispose();
 	}
 	
-	// Make this tile on fire / not on fire (but why would you want the latter?)
+	// Make this tile on fire / not on fire (if it is flammable)
 	public void setFire(boolean onFire) {
-		this.onFire = onFire;
-		if (onFire) {
-			fire.start();
-		} else {
-			fire.reset();
+		if(flammable) {
+			this.onFire = onFire;
+			if (onFire) {
+				fire.start();
+			} else {
+				fire.reset();
+			}
 		}
+	}
+	
+	// Apply given damage to this tile (if it is destructable)
+	public void damage(int dmg) {
+		if (destructable) hitpoints = Math.max(0, hitpoints-dmg);
 	}
 	
 	// Update the tile
 	public void update(float delta) {
+		// Update hitpoints if on fire
+		if (onFire && destructable) {
+			firedamagetick += delta;
+			if (firedamagetick > 1.0f) {
+				firedamagetick -= 1.0f;
+				hitpoints = Math.max(0, hitpoints-1);
+			}
+		}
+		
 		// Update particle systems
-		if(onFire) fire.update(delta);
+		if (onFire) fire.update(delta);
 	}
 	
 	// Render the tile only
@@ -101,6 +137,6 @@ public class Tile {
 	// Render the particle effects only
 	public void renderParticles(SpriteBatch batch) {
 		// Draw the particles
-		if(onFire) fire.draw(batch);
+		if (onFire) fire.draw(batch);
 	}
 }
