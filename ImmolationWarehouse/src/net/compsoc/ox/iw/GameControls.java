@@ -129,9 +129,9 @@ public class GameControls implements InputProcessor, MainGameListener {
 	 */
 	public void onRender() {
 		//If the player is attempting to move directions, change their facing.
-		//if (xDir != 0 && yDir != 0) {
-		//MainGame.player.setVelocity(xDir, yDir);
-		// }
+		if (xDir != 0 || yDir != 0) {
+			MainGame.player.setVelocity(xDir, yDir);
+		}
 		
 	}
 

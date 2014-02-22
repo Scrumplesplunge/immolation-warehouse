@@ -21,7 +21,7 @@ public class MainGame implements ApplicationListener {
     public static ParticleEffect fire = new ParticleEffect();
 	
 	private Level demoLevel;
-	private Player daPlayerMan;
+	public static Player player;
 	
 	@Override
 	public void create() {
@@ -38,7 +38,7 @@ public class MainGame implements ApplicationListener {
 		batch = new SpriteBatch();
 		
 		demoLevel = LevelFile.loadLevel("l1.iw");
-		daPlayerMan = new Player(demoLevel, 32.0f, 32.0f);
+		player = new Player(demoLevel, 32.0f, 32.0f);
 	}
 
 	@Override
@@ -56,12 +56,12 @@ public class MainGame implements ApplicationListener {
 		//Make sure the controls update.
 		controls.onRender();
 		
-		daPlayerMan.update();
+		player.update();
 		
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		demoLevel.render(batch);
-		daPlayerMan.render(batch);
+		player.render(batch);
 		batch.end();
 	}
 

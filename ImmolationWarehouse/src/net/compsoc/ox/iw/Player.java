@@ -13,6 +13,7 @@ class Player {
     // Configuration.
     private static final float speed = 256.0f;
     private static final float width = 64.0f, height = 64.0f;
+    private static final float inertia = 0.01f;
 
     // Position and velocity.
     private float x, y, vx, vy;
@@ -46,7 +47,7 @@ class Player {
 
         sprite = new Sprite(region);
         sprite.setScale(1.0f, 1.0f);
-        sprite.setOrigin(0.5f, 0.5f);
+        sprite.setOrigin(0.5f * width, 0.5f * height);
         
         setPosition(x, y);
     }
@@ -66,6 +67,10 @@ class Player {
         
         setPosition(x, y);
         
+        float nvy = vy / speed;
+        float rot = vx < 0 ? (float)Math.acos(nvy) : -(float)Math.acos(nvy);
+        sprite.setRotation(rot * 180.0f / (float)Math.PI);
+        
         MainGame.positionCamera(x, y, 0.0f, 1.0f);
     }
 
@@ -80,11 +85,17 @@ class Player {
 
     // Change our velocity.
     public void setVelocity(float vx, float vy) {
-        this.vx = vx;
-        this.vy = vy;
-
-        // Scale this velocity to match the speed.
-        float mul = (float) (speed / Math.sqrt(this.vx * this.vx + this.vy * this.vy));
+    	// Scale this velocity to match the speed.
+        float mul = (float) (speed / Math.sqrt(vx * vx + vy * vy));
+        vx *= mul;
+        vy *= mul;
+        
+    	float lerp = (float)Math.pow(inertia, delta);
+        this.vx = lerp * this.vx + (1 - lerp) * vx;
+        this.vy = lerp * this.vy + (1 - lerp) * vy;
+        
+    	// Scale the final velocity to match the speed.
+        mul = (float) (speed / Math.sqrt(this.vx * this.vx + this.vy * this.vy));
         this.vx *= mul;
         this.vy *= mul;
     }
