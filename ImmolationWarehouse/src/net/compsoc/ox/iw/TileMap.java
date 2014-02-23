@@ -32,6 +32,12 @@ public class TileMap {
         		case 't':
         			tileType = GameTileType.Table;
         			break;
+        		case 's':
+        			tileType = GameTileType.Start;
+        			break;
+        		case 'e':
+        			tileType = GameTileType.End;
+        			break;
         		default:
         			tileType = GameTileType.Wall;
         			break;
