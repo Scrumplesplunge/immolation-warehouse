@@ -32,6 +32,7 @@ public class Tile {
 	private String imagename = "";			// WITHOUT extension (png assumed)
 	private boolean flammable = true;
 	private float flammability = 0.005f;
+	private float extinguishchance = 0.005f;
 	private boolean onFire = false;
 	private boolean solid = false;
 	private boolean destructable = false;
@@ -42,7 +43,6 @@ public class Tile {
 	// Accessors
 	public AABB getAABB() { return aabb; }
 	public boolean isFlammable() { return flammable; }
-	public float getFlammability() { return flammability; }
 	public boolean isOnFire() { return onFire; }
 	public boolean isSolid() { return solid; }
 	public boolean isDestructable() { return destructable; }
@@ -56,6 +56,7 @@ public class Tile {
 			imagename = "wall";
 			flammable = true;
 			flammability = 0.001f;
+			extinguishchance = 0.001f;
 			solid = true;
 			destructable = false;
 			hitpoints = 0;
@@ -65,6 +66,7 @@ public class Tile {
 			imagename = "floor";
 			flammable = true;
 			flammability = 0.01f;
+			extinguishchance = 0.005f;
 			solid = false;
 			destructable = false;
 			hitpoints = 0;
@@ -74,6 +76,7 @@ public class Tile {
 			imagename = "table";
 			flammable = true;
 			flammability = 0.2f;
+			extinguishchance = 0.01f;
 			solid = true;
 			destructable = true;
 			hitpoints = 100;
@@ -83,6 +86,7 @@ public class Tile {
 			imagename = "barrel";
 			flammable = true;
 			flammability = 0.2f;
+			extinguishchance = 0.01f;
 			destructable = true;
 			hitpoints = 50;
 			pointsPerDamage = 50;
@@ -91,6 +95,7 @@ public class Tile {
 			imagename = "start";
 			flammable = false;
 			flammability = 0.0f;
+			extinguishchance = 0.0f;
 			destructable = false;
 			hitpoints = 0;
 			pointsPerDamage = 1000;
@@ -99,6 +104,7 @@ public class Tile {
 			imagename = "end";
 			flammable = false;
 			flammability = 0.0f;
+			extinguishchance = 0.0f;
 			destructable = false;
 			hitpoints = 0;
 			pointsPerDamage = 1000;
@@ -195,6 +201,8 @@ public class Tile {
 				firedamagetick -= 0.1f;
 				attemptfirespread = true;
 				damage(1);
+				// Chance to go out
+				if (Math.random() <= extinguishchance) setFire(false);
 			}
 		}
 		
