@@ -164,4 +164,8 @@ public class TileMap {
 		}
 		return null;
 	}
+	
+	public Tile getTileAt(int x, int y) {
+		return grid[y][x];
+	}
 }

@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -36,6 +35,7 @@ public class MainGame implements ApplicationListener {
 	public static String[] burnManScreams;
 	
 	public static int score = 0;
+	public static int scoreAtLevelStart = 0;
 	public static int levelNo = 1;
 
     // Global instances are literally the best of the things.
@@ -44,7 +44,7 @@ public class MainGame implements ApplicationListener {
     
     private static Sprite heat;
 	
-	private Level demoLevel;
+	private static Level currentLevel;
 	public static Player player;
 	
 	@Override
@@ -84,8 +84,8 @@ public class MainGame implements ApplicationListener {
 		batch = new SpriteBatch();
 		barBatch = new SpriteBatch();
 		
-		demoLevel = LevelFile.loadLevel("level4");
-		player = new Player(demoLevel, 224.0f, 224.0f);
+		currentLevel = LevelFile.loadLevel("level1");
+		player = new Player(currentLevel);
 		
 		//Font!
 		final String fontFileName = "font/scp.fnt";
@@ -104,13 +104,14 @@ public class MainGame implements ApplicationListener {
 		music.setVolume(0.45f);
 		music.setLooping("music", true);
 		music.play("music");
+		sound.add("failure", "failure.ogg");
 	}
 
 	@Override
 	public void dispose() {
 		batch.dispose();
 		barBatch.dispose();
-		demoLevel.dispose();
+		currentLevel.dispose();
 		fire.dispose();
 		music.onDispose();
 		sound.onDispose();
@@ -127,17 +128,23 @@ public class MainGame implements ApplicationListener {
 
 		tweenManager.update(delta);
 		controls.onRender();
-		demoLevel.update(delta);
+		currentLevel.update(delta);
 		player.update(delta);
 		
 		// Render things
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		demoLevel.render(batch);
+		currentLevel.render(batch);
 		player.render(batch);
 		batch.end();
 		drawHUD();
+		
+		// Check for endgame.
+		AABB end = currentLevel.getTileAt(currentLevel.getEndX(), currentLevel.getEndY()).getAABB();
+		AABB ply = player.getAABB();
+		if (end.collidesWith(ply)) advanceLevel();
 	}
+	
 
 	@Override
 	public void resize(int width, int height) {
@@ -151,6 +158,22 @@ public class MainGame implements ApplicationListener {
 
 	@Override
 	public void resume() {
+	}
+	
+	public static void levelFailed() {
+		score = scoreAtLevelStart;
+		currentLevel.dispose();
+		currentLevel = LevelFile.loadLevel("level" + String.valueOf(levelNo));
+		sound.play("failure");
+		player = new Player(currentLevel);
+	}
+	
+	public static void advanceLevel() {
+		scoreAtLevelStart = score;
+		currentLevel.dispose();
+		levelNo += 1;
+		currentLevel = LevelFile.loadLevel("level" + String.valueOf(levelNo));
+		player = new Player(currentLevel);
 	}
 	
 	// Reposition camera
