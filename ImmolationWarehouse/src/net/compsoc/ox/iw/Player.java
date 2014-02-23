@@ -48,7 +48,7 @@ class Player {
     private ParticleEffect fire;
 
     // Constructor.
-    public Player(Level level, float x, float y) {
+    public Player(Level level) {
         this.level = level;
         this.vx = 0;
         this.vy = speed;
@@ -252,6 +252,10 @@ class Player {
     	rightArmAngle += rightArmAngVel * delta;
         
         overheat += delta / overheatTime;
+        
+        if (overheat >= 1) {
+        	MainGame.levelFailed();
+        }
         
         setPosition(x, y);
         

@@ -11,6 +11,7 @@ public class LevelFile {
 	public static Random r = new Random();
 	
 	public static Level loadLevel(String fileName) {
+		MainGame.scoreAtLevelStart = MainGame.score;
         FileHandle levelFile = Gdx.files.internal(fileName + ".iw");
         if (!levelFile.exists()) {
             Gdx.app.error(loggerTag, "Level file " + fileName
