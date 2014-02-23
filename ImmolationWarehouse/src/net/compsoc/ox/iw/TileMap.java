@@ -45,6 +45,15 @@ public class TileMap {
         		case 'e':
         			tileType = GameTileType.End;
         			break;
+        		case 'd':
+        			tileType = GameTileType.Door;
+        			break;
+        		case 'h':
+        			tileType = GameTileType.GlassH;
+        			break;
+        		case 'v':
+        			tileType = GameTileType.GlassV;
+        			break;
         		default:
         			tileType = GameTileType.Wall;
         			break;
