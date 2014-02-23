@@ -14,7 +14,7 @@ class NPC {
     private static final float walkSpeed = 64.0f, runSpeed = 512.0f;
     private static final float directionChangeProbability = 0.5f;
     private static final float waterRefreshingness = 0.4f;
-    private static final int clumsyCrashyDamage = 40;
+    private static final int clumsyCrashyDamage = 10;
     private static final float width = 64.0f, height = 64.0f;
     private static final float overheatTime = 30.0f;
     private static final float armCraziness = 0.99f, armSpeed = 2000.0f;
@@ -24,7 +24,7 @@ class NPC {
 
     // Position and velocity.
     private float x, y, vx, vy, target_bodyAngle;
-    public boolean burning = false;
+    public boolean burning = false, dead = false;
     private float speed = walkSpeed;
     
     public float getX() { return x; }
@@ -68,7 +68,7 @@ class NPC {
         fire.start();
 
         // Set up the player texture and sprite.
-        texture = new Texture(Gdx.files.internal("character.png"));
+        texture = new Texture(Gdx.files.internal("npc" + (int)(Math.floor(Math.random() * 5) + 1) + ".png"));
         texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
         TextureRegion region = new TextureRegion(texture, 0.0f, 0.0f, 1.0f, 1.0f);
 
@@ -79,8 +79,8 @@ class NPC {
         // Player arms.
         arms = new Texture(Gdx.files.internal("arms.png"));
         arms.setFilter(TextureFilter.Linear,  TextureFilter.Linear);
-        TextureRegion left = new TextureRegion(arms, 0, 22, 22, 44);
-        TextureRegion right = new TextureRegion(arms, 22, 22, 44, 44);
+        TextureRegion left = new TextureRegion(arms, 0, 22, 22, 33);
+        TextureRegion right = new TextureRegion(arms, 22, 22, 22, 33);
         
         leftArm = new Sprite(left);
         leftArm.setScale(1.0f, 1.0f);
@@ -228,6 +228,8 @@ class NPC {
 
     // Update our position.
     public void update(float delta) {
+    	if (dead) return;
+    	
     	if (Math.random() > Math.pow(Math.pow(1 - directionChangeProbability, burning ? 2 : 1), delta)) {
     		// Choose a random velocity.
     		setVelocity((float)Math.floor(Math.random() * 3) - 1.0f, (float)Math.floor(Math.random() * 3) - 1.0f);
@@ -244,7 +246,7 @@ class NPC {
         float leftArmAccel = 50.0f * angNorm(bodyAngle - leftArmAngle - leftArmAngVel / 15.0f);
         float rightArmAccel = 50.0f * angNorm(bodyAngle - rightArmAngle - rightArmAngVel / 15.0f);
         
-        float prob = 1 - (float)Math.pow(1 - armCraziness, delta);
+        float prob = 1 - (float)Math.pow(1 - (burning ? armCraziness : 0), delta);
         if (Math.random() < prob) leftArmAccel += armSpeed * (float)(Math.random() - 0.5);
         if (Math.random() < prob) rightArmAccel += armSpeed * (float)(Math.random() - 0.5);
         leftArmAngVel += leftArmAccel * delta;
@@ -261,7 +263,12 @@ class NPC {
     	rightArmAngle += rightArmAngVel * delta;
     	
     	// Make us BURN
-    	if (level.getTileAt(x, y).isOnFire()) burning = true;
+    	Tile t = level.getTileAt(x, y);
+    	if (t == null) {
+    		dead = true;
+    		return;
+    	}
+    	if (t.isOnFire()) burning = true;
         
         setPosition(x, y);
         
@@ -302,6 +309,8 @@ class NPC {
 
     // Render the player.
     public void render(SpriteBatch batch) {
+    	if (dead) return;
+    	
         // Draw the player sprite first.
     	leftArm.draw(batch);
     	rightArm.draw(batch);

@@ -8,6 +8,7 @@ public class GameControls implements InputProcessor, MainGameListener {
 	private int yDir = 0;
 	private int frameWindow = 0;
 	private boolean musicToggle = false;
+	private int cycle = 0;
 	
 	public static float stunTimeout = 0.0f;
 
@@ -18,6 +19,40 @@ public class GameControls implements InputProcessor, MainGameListener {
 	 */
 	public boolean keyDown(int keycode) {
 		switch (keycode) {
+		case Input.Keys.NUM_1:
+			MainGame.runLevel("level1");
+			break;
+		case Input.Keys.NUM_2:
+			MainGame.runLevel("level2");
+			break;
+		case Input.Keys.NUM_3:
+			MainGame.runLevel("level3");
+			break;
+		case Input.Keys.NUM_4:
+			MainGame.runLevel("level4");
+			break;
+		case Input.Keys.NUM_5:
+			MainGame.runLevel("level5");
+			break;
+		case Input.Keys.NUM_6:
+			MainGame.runLevel("level6");
+			break;
+		case Input.Keys.NUM_7:
+			MainGame.runLevel("level7");
+			break;
+		case Input.Keys.NUM_8:
+			MainGame.runLevel("level8");
+			break;
+		case Input.Keys.NUM_9:
+			MainGame.runLevel("level9");
+			break;
+		case Input.Keys.NUM_0:
+			String[] bonus = {
+				"demolevel"
+			};
+			MainGame.runLevel(bonus[cycle]);
+			cycle = (cycle + 1) % bonus.length;
+			break;
 		case Input.Keys.W:
 			//Travel upwards.
 			yDir += 1;

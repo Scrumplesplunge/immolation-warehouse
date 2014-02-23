@@ -88,8 +88,8 @@ public class MainGame implements ApplicationListener {
 		batch = new SpriteBatch();
 		barBatch = new SpriteBatch();
 		
-		currentLevel = LevelFile.loadLevel("level1");
-		//currentLevel = new Level(ProceduralLevelGenerator.generateLevel(20,20), "proclevel");
+		currentLevel = LevelFile.loadLevel("demolevel");
+		//currentLevel = new Level(ProceduralLevelGenerator.generateLevel(40,30), "proclevel");
 		player = new Player(currentLevel);
 		
 		//Font!
@@ -180,10 +180,15 @@ public class MainGame implements ApplicationListener {
 	}
 	
 	public static void advanceLevel() {
+		levelNo += 1;
+		String title = "level" + levelNo;
+		runLevel(title);
+	}
+	
+	public static void runLevel(String title) {
 		scoreAtLevelStart = score;
 		currentLevel.dispose();
-		levelNo += 1;
-		currentLevel = LevelFile.loadLevel("level" + String.valueOf(levelNo));
+		currentLevel = LevelFile.loadLevel(title);
 		player = new Player(currentLevel);
 	}
 	
