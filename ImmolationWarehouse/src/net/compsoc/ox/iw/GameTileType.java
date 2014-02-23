@@ -5,5 +5,6 @@ public enum GameTileType {
 	Floor,
 	Table,
 	Start,
-	End
+	End,
+	Barrel
 }
