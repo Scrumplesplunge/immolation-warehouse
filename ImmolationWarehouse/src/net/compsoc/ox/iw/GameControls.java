@@ -6,6 +6,8 @@ public class GameControls implements InputProcessor, MainGameListener {
 	
 	private int xDir = 0;
 	private int yDir = 0;
+	
+	public static float stunTimeout = 0.0f;
 
 	@Override
 	/**
@@ -129,10 +131,12 @@ public class GameControls implements InputProcessor, MainGameListener {
 	 */
 	public void onRender() {
 		//If the player is attempting to move directions, change their facing.
-		if (xDir != 0 || yDir != 0) {
+		if (stunTimeout <= 0 && (xDir != 0 || yDir != 0)) {
 			MainGame.player.setVelocity(xDir, yDir);
 		}
 		
+		float delta = Gdx.graphics.getDeltaTime();
+		stunTimeout -= delta;
 	}
 
 	@Override

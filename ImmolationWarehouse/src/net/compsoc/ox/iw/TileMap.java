@@ -117,7 +117,7 @@ public class TileMap {
 		for(int r = 0; r < gridHeight; r++) {
 			for(int c = 0; c < gridWidth; c++) {
 				if(grid[r][c].isSolid() && aabb.collidesWith(grid[r][c].getAABB()))
-					result[i] = grid[r][c].getAABB();
+					result[i++] = grid[r][c].getAABB();
 			}
 		}
 		

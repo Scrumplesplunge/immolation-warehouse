@@ -17,6 +17,7 @@ class Player {
     private static final float armCraziness = 0.99f, armSpeed = 2000.0f;
     private static final float armWidth = 22.0f, armHeight = 44.0f;
     private static final float inertia = 0.01f, armInertia = 0.001f;
+    private static final float stunTimeout = 0.1f;
 
     // Position and velocity.
     private float x, y, vx, vy, target_bodyAngle;
@@ -111,6 +112,82 @@ class Player {
     	float ny = y / (float)Math.sqrt(x * x + y * y);
     	return x < 0 ? (float)Math.acos(ny) : -(float)Math.acos(ny);
     }
+    
+    private float horizontalIndent(boolean resolveLeft, AABB other) {
+    	if (resolveLeft) {
+    		return 0.001f + aabb.x + aabb.w - other.x;
+    	} else {
+    		return 0.001f + other.x + other.w - aabb.x;
+    	}
+    }
+    
+    private float verticalIndent(boolean resolveDown, AABB other) {
+    	if (resolveDown) {
+    		return 0.001f + aabb.y + aabb.h - other.y;
+    	} else {
+    		return 0.001f + other.y + other.h - aabb.y;
+    	}
+    }
+    
+    private boolean resolveHorizontal(boolean resolveLeft, AABB other) {
+    	float indent = horizontalIndent(resolveLeft, other);
+    	if (resolveLeft) {
+			// Try to resolve by moving character to the left.
+			AABB newAABB = new AABB(aabb.x - indent, aabb.y, aabb.w, aabb.h);
+			if (!level.collidesWith(newAABB)) {
+				setPosition(x - indent, y);
+				vx = -vx;
+				target_bodyAngle = -target_bodyAngle;
+				bodyAngle = -bodyAngle;
+				updateSprites();
+				GameControls.stunTimeout = stunTimeout;
+				return true;
+			}
+		} else {
+			// Try to resolve by moving character to the right.
+			AABB newAABB = new AABB(aabb.x + indent, aabb.y, aabb.w, aabb.h);
+			if (!level.collidesWith(newAABB)) {
+				setPosition(x + indent, y);
+				vx = -vx;
+				target_bodyAngle = -target_bodyAngle;
+				bodyAngle = -bodyAngle;
+				updateSprites();
+				GameControls.stunTimeout = stunTimeout;
+				return true;
+			}
+		}
+    	return false;
+    }
+    
+    private boolean resolveVertical(boolean resolveDown, AABB other) {
+    	float indent = verticalIndent(resolveDown, other);
+    	if (resolveDown) {
+			// Try to resolve by moving character downwards.
+			AABB newAABB = new AABB(aabb.x, aabb.y - indent, aabb.w, aabb.h);
+			if (!level.collidesWith(newAABB)) {
+				setPosition(x, y - indent);
+				vy = -vy;
+				target_bodyAngle = -angNorm(target_bodyAngle + (float)Math.PI);
+				bodyAngle = -angNorm(bodyAngle + (float)Math.PI);
+				updateSprites();
+				GameControls.stunTimeout = stunTimeout;
+				return true;
+			}
+		} else {
+			// Try to resolve by moving character upwards.
+			AABB newAABB = new AABB(aabb.x, aabb.y + indent, aabb.w, aabb.h);
+			if (!level.collidesWith(newAABB)) {
+				setPosition(x, y + indent);
+				vy = -vy;
+				target_bodyAngle = -angNorm(target_bodyAngle + (float)Math.PI);
+				bodyAngle = -angNorm(bodyAngle + (float)Math.PI);
+				updateSprites();
+				GameControls.stunTimeout = stunTimeout;
+				return true;
+			}
+		}
+    	return false;
+    }
 
     // Update our position.
     public void update(float delta) {
@@ -147,7 +224,32 @@ class Player {
         
         setPosition(x, y);
         
-        if(level.collidesWith(aabb)) System.out.println("PHASING THROUGH DA WALLS");
+        if(level.collidesWith(aabb)) {
+        	// Try resolving in all four directions.
+        	AABB[] collisions = level.getIntersectingAABBs(aabb);
+        	
+        	boolean nudgeLeft = vx > 0;
+        	boolean nudgeDown = vy > 0;
+        	
+        	for (int i = 0; i < collisions.length; i++) {
+        		float h = horizontalIndent(nudgeLeft, collisions[i]);
+        		float v = verticalIndent(nudgeDown, collisions[i]);
+        		
+        		if (h < v) {
+        			// Attempt to resolve horizontally.
+        			if (resolveHorizontal(nudgeLeft, collisions[i])) return;
+        		
+        			// Attempt to resolve vertically.
+        			if (resolveVertical(nudgeDown, collisions[i])) return;
+        		} else {
+        			// Attempt to resolve vertically.
+        			if (resolveVertical(nudgeDown, collisions[i])) return;
+        			
+        			// Attempt to resolve horizontally.
+        			if (resolveHorizontal(nudgeLeft, collisions[i])) return;
+        		}
+        	}
+        }
         
         updateSprites();
         
