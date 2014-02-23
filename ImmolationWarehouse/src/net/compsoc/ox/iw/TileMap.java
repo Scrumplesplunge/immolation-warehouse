@@ -8,8 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 public class TileMap {
 	// Grid of tiles
-	int gridWidth, gridHeight;
-	public int startX, startY, endX, endY;
+	private int gridWidth, gridHeight;
 	private Tile[][] grid;		// grid[row][column]
 	
 	// Constructor
@@ -33,15 +32,14 @@ public class TileMap {
         		case 't':
         			tileType = GameTileType.Table;
         			break;
+        		case 'l':
+        			tileType = GameTileType.Floor;
+        			break;
         		case 's':
         			tileType = GameTileType.Start;
-        			startX = c;
-        			startY = r;
         			break;
         		case 'e':
         			tileType = GameTileType.End;
-        			endX = c;
-        			endY = r;
         			break;
         		default:
         			tileType = GameTileType.Wall;
@@ -136,5 +134,10 @@ public class TileMap {
 		// Return array
 		// God that was dumb code, wasn't it?
 		return result;
+	}
+	
+	// Return the tile that the given coordinates occupy
+	public Tile getTileAt(float x, float y) {
+		return grid[(int)Math.floor(x / Tile.tileWidth)][(int)Math.floor(y / Tile.tileHeight)];
 	}
 }

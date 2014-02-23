@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 class Player {
     // Configuration.
     private static final float defaultSpeed = 256.0f;
+    private static final float waterRefreshingness = 0.2f;
     private static final float width = 64.0f, height = 64.0f;
     private static final float overheatTime = 30.0f;
     private static final float armCraziness = 0.99f, armSpeed = 2000.0f;
@@ -81,7 +82,7 @@ class Player {
         rightArm.setScale(1.0f, 1.0f);
         rightArm.setOrigin(0.5f * armWidth, 0.0f);
         
-        setPosition(level.map.startX * 64 + 32, level.map.startY * 64 + 32);
+        setPosition(level.getStartX() * 64 + 32, level.getStartY() * 64 + 32);
     }
     
     public void setPosition(float x, float y) {
@@ -129,19 +130,42 @@ class Player {
     	}
     }
     
+    private void doHorizontal() {
+    	if (GameControls.stunTimeout < 0.0f) {
+    		vx = -vx;
+    		target_bodyAngle = -target_bodyAngle;
+    		bodyAngle = -bodyAngle;
+    	} else {
+    		if (Math.random() < 0.5) {
+				target_bodyAngle = bodyAngle = 0;
+			} else {
+				target_bodyAngle = bodyAngle = (float)Math.PI;
+			}
+    	}
+    }
+    
+    private void doVertical() {
+    	if (GameControls.stunTimeout < 0.0f) {
+    		vy = -vy;
+    		target_bodyAngle = -angNorm(target_bodyAngle + (float)Math.PI);
+    		bodyAngle = -angNorm(bodyAngle + (float)Math.PI);
+    	} else {
+    		if (Math.random() < 0.5) {
+    			target_bodyAngle = bodyAngle = 0.5f * (float)Math.PI;
+    		} else {
+    			target_bodyAngle = bodyAngle = -0.5f * (float)Math.PI;
+    		}
+    	}
+    }
+    
     private boolean resolveHorizontal(boolean resolveLeft, AABB other) {
     	float indent = horizontalIndent(resolveLeft, other);
     	if (resolveLeft) {
 			// Try to resolve by moving character to the left.
 			AABB newAABB = new AABB(aabb.x - indent, aabb.y, aabb.w, aabb.h);
 			if (!level.collidesWith(newAABB)) {
-				// This resolved the collision!
 				setPosition(x - indent, y);
-				if (Math.random() < 0.5) {
-					target_bodyAngle = bodyAngle = 0;
-				} else {
-					target_bodyAngle = bodyAngle = (float)Math.PI;
-				}
+				doHorizontal();
 				updateSprites();
 				GameControls.stunTimeout = stunTimeout;
 				return true;
@@ -150,13 +174,8 @@ class Player {
 			// Try to resolve by moving character to the right.
 			AABB newAABB = new AABB(aabb.x + indent, aabb.y, aabb.w, aabb.h);
 			if (!level.collidesWith(newAABB)) {
-				// This resolved the collision!
 				setPosition(x + indent, y);
-				if (Math.random() < 0.5) {
-					target_bodyAngle = bodyAngle = 0;
-				} else {
-					target_bodyAngle = bodyAngle = (float)Math.PI;
-				}
+				doHorizontal();
 				updateSprites();
 				GameControls.stunTimeout = stunTimeout;
 				return true;
@@ -171,13 +190,8 @@ class Player {
 			// Try to resolve by moving character downwards.
 			AABB newAABB = new AABB(aabb.x, aabb.y - indent, aabb.w, aabb.h);
 			if (!level.collidesWith(newAABB)) {
-				// This resolved the collision!
 				setPosition(x, y - indent);
-				if (Math.random() < 0.5) {
-					target_bodyAngle = bodyAngle = 0.5f * (float)Math.PI;
-				} else {
-					target_bodyAngle = bodyAngle = -0.5f * (float)Math.PI;
-				}
+				doVertical();
 				updateSprites();
 				GameControls.stunTimeout = stunTimeout;
 				return true;
@@ -186,13 +200,8 @@ class Player {
 			// Try to resolve by moving character upwards.
 			AABB newAABB = new AABB(aabb.x, aabb.y + indent, aabb.w, aabb.h);
 			if (!level.collidesWith(newAABB)) {
-				// This resolved the collision!
 				setPosition(x, y + indent);
-				if (Math.random() < 0.5) {
-					target_bodyAngle = bodyAngle = 0.5f * (float)Math.PI;
-				} else {
-					target_bodyAngle = bodyAngle = -0.5f * (float)Math.PI;
-				}
+				doVertical();
 				updateSprites();
 				GameControls.stunTimeout = stunTimeout;
 				return true;
@@ -262,6 +271,18 @@ class Player {
         		}
         	}
         }
+        
+        Pickup[] pickups = level.getIntersectingPickups(aabb);
+        for (int i = 0; i < pickups.length; i++) {
+        	switch (pickups[i].type) {
+        	case Water:
+        		overheat = (float)Math.max(0, overheat - waterRefreshingness);
+        		break;
+        	default:
+        		System.out.println("ERMAGERD");
+        	}
+        }
+        level.removePickups(pickups);
         
         updateSprites();
         
