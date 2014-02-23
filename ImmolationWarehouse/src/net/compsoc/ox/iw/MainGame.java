@@ -23,6 +23,7 @@ public class MainGame implements ApplicationListener {
 	
 	private static OrthographicCamera camera;
 	private SpriteBatch batch;
+	private SpriteBatch barBatch = new SpriteBatch();
 	private GameControls controls;
 	public static MusicManager music = new MusicManager();
 	public static TweenManager tweenManager = new TweenManager();
@@ -33,6 +34,7 @@ public class MainGame implements ApplicationListener {
 
     // Global instances are literally the best of the things.
     public static ParticleEffect fire = new ParticleEffect();
+    public static ParticleEffect barFire = new ParticleEffect();
     
     private static Sprite heat;
 	
@@ -51,6 +53,8 @@ public class MainGame implements ApplicationListener {
 		
 		// IT'S A HACK
 		fire.load(Gdx.files.internal("fire.p"), Gdx.files.internal("."));
+		
+		barFire.load(Gdx.files.internal("barfire.p"), Gdx.files.internal("."));
 		
 		controls = new GameControls();
 		Gdx.input.setInputProcessor(controls);
@@ -102,7 +106,7 @@ public class MainGame implements ApplicationListener {
 		demoLevel.render(batch);
 		player.render(batch);
 		drawHUD();
-		batch.end();
+		//batch.end();
 	}
 
 	@Override
@@ -145,5 +149,10 @@ public class MainGame implements ApplicationListener {
 		heat.setPosition(heatXPos, heatYPos);
 		heat.setSize((int) heatWidth, 8);
 		heat.draw(batch);
+		batch.end();
+		barBatch.begin();
+		barFire.setPosition(heatWidth - 48, 0);
+		barFire.draw(barBatch, Gdx.graphics.getDeltaTime());
+		barBatch.end();
 	}
 }
