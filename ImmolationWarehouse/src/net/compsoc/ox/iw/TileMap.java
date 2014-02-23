@@ -20,9 +20,9 @@ public class TileMap {
         gridHeight = lines.length;
         grid = new Tile[gridWidth][gridHeight];
         GameTileType tileType;
-        for (int r = gridHeight-1; r >= 0; r--) {
+        for (int r = 0; r < gridHeight; r++) {
         	for (int c = 0; c < gridWidth; c++) {
-        		switch (lines[r].charAt(c)) {
+        		switch (lines[gridHeight-r-1].charAt(c)) {
         		case 'w':
         			tileType = GameTileType.Wall;
         			break;
@@ -31,6 +31,12 @@ public class TileMap {
         			break;
         		case 't':
         			tileType = GameTileType.Table;
+        			break;
+        		case 's':
+        			tileType = GameTileType.Start;
+        			break;
+        		case 'e':
+        			tileType = GameTileType.End;
         			break;
         		default:
         			tileType = GameTileType.Wall;

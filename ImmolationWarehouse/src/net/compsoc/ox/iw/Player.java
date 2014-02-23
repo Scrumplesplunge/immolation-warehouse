@@ -11,16 +11,18 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 class Player {
     // Configuration.
-    private static final float speed = 256.0f;
-    private static final float overheatTime = 20.0f;
+    private static final float defaultSpeed = 256.0f;
+    private static final float width = 64.0f, height = 64.0f;
+    private static final float overheatTime = 30.0f;
     private static final float armCraziness = 0.99f, armSpeed = 2000.0f;
-    private static final float width = 64.0f, height = 64.0f, armWidth = 22.0f, armHeight = 44.0f;
+    private static final float armWidth = 22.0f, armHeight = 44.0f;
     private static final float inertia = 0.01f, armInertia = 0.001f;
 
     // Position and velocity.
     private float x, y, vx, vy, target_bodyAngle;
     public float overheat = 0.0f;
-    private float delta;
+    private float delta = 1.0f;
+    private float speed = defaultSpeed;
     
     // Collisions
     private AABB aabb;
@@ -122,6 +124,8 @@ class Player {
         y += vy * delta;
         float leftArmAccel = 50.0f * angNorm(bodyAngle - leftArmAngle - leftArmAngVel / 15.0f);
         float rightArmAccel = 50.0f * angNorm(bodyAngle - rightArmAngle - rightArmAngVel / 15.0f);
+        
+        this.speed = defaultSpeed * (1 + this.overheat);
         
         float prob = 1 - (float)Math.pow(1 - armCraziness, delta);
         if (Math.random() < prob) leftArmAccel += armSpeed * (float)(Math.random() - 0.5);
