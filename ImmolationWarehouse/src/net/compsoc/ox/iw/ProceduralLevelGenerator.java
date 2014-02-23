@@ -29,10 +29,6 @@ public class ProceduralLevelGenerator {
 			if (!repeat) failsleft--;
 		}
 		
-		// Create some corridors
-		for(int k = 0; k < 10; k++) {
-		}
-		
 		// Place a start
 		int mr = -1, mc = -1;
 		for (int r = 0; r < height; r++) {
