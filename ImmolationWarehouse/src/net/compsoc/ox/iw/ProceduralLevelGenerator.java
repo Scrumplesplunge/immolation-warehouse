@@ -29,6 +29,10 @@ public class ProceduralLevelGenerator {
 			if (!repeat) failsleft--;
 		}
 		
+		// Create some corridors
+		for(int k = 0; k < 10; k++) {
+		}
+		
 		// Place a start
 		int mr = -1, mc = -1;
 		for (int r = 0; r < height; r++) {
@@ -40,6 +44,18 @@ public class ProceduralLevelGenerator {
         	}
 		}
 		map[mr][mc] = 's';
+		
+		// Place an end
+		mr = height; mc = width;
+		for (int r = 0; r < height; r++) {
+        	for (int c = 0; c < width; c++) {
+        		if (mr == height || (map[r][c] == 'f' && r <= mr && Math.random() < 0.1f)) {
+        			mr = r;
+        			mc = c;
+        		}
+        	}
+		}
+		map[mr][mc] = 'e';
 		
 		// Build and output level
 		String[] result = new String[height];
@@ -80,10 +96,10 @@ public class ProceduralLevelGenerator {
 	public static void createRoom(int x, int y, int w, int h) {
 		for (int r = y; r < y + h; r++) {
         	for (int c = x; c < x + w; c++) {
-        		if (	c <= x + (int)(Math.random() * 1.2d)
-        			||	c >= x + w - 1 - (int)(Math.random() * 1.2d)
-        			||	r <= y + (int)(Math.random() * 1.2d)
-        			||	r >= y + h - 1 - (int)(Math.random() * 1.2d)	) {
+        		if (	c <= x + (int)(Math.random() * 1.1d)
+        			||	c >= x + w - 1 - (int)(Math.random() * 1.1d)
+        			||	r <= y + (int)(Math.random() * 1.1d)
+        			||	r >= y + h - 1 - (int)(Math.random() * 1.1d)	) {
         			map[r][c] = 'w';
         		} else {
         			map[r][c] = 'f';
