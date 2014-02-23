@@ -26,6 +26,9 @@ class Player {
     public float overheat = 0.0f;
     private float speed = defaultSpeed;
     
+    public float getX() { return x; }
+    public float getY() { return y; }
+    
     // Collisions
     private AABB aabb;
     
