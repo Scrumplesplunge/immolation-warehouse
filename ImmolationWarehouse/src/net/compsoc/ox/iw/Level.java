@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  */
 public class Level {
 	// Tilemap representing level layout
-	private TileMap map;
+	public TileMap map;
 	
 	// Background image
 	private Texture background_tex;		// Texture for the background sprite

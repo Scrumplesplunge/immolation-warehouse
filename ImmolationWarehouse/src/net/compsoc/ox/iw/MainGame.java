@@ -22,6 +22,7 @@ public class MainGame implements ApplicationListener {
 	public static final String loggerTag = "MainGame";
 	
 	private static OrthographicCamera camera;
+	private static OrthographicCamera hudCam;
 	private SpriteBatch batch;
 	private SpriteBatch barBatch;
 	private GameControls controls;
@@ -60,10 +61,11 @@ public class MainGame implements ApplicationListener {
 		Gdx.input.setInputProcessor(controls);
 		
 		camera = new OrthographicCamera(512, 512);
+		hudCam = new OrthographicCamera(512, 512);
 		batch = new SpriteBatch();
 		barBatch = new SpriteBatch();
 		
-		demoLevel = LevelFile.loadLevel("l1.iw");
+		demoLevel = LevelFile.loadLevel("l2.iw");
 		player = new Player(demoLevel, 224.0f, 224.0f);
 		
 		//Font!
@@ -86,6 +88,7 @@ public class MainGame implements ApplicationListener {
 	@Override
 	public void dispose() {
 		batch.dispose();
+		barBatch.dispose();
 		demoLevel.dispose();
 		fire.dispose();
 	}
@@ -106,13 +109,14 @@ public class MainGame implements ApplicationListener {
 		batch.begin();
 		demoLevel.render(batch);
 		player.render(batch);
+		batch.end();
 		drawHUD();
-		//batch.end();
 	}
 
 	@Override
 	public void resize(int width, int height) {
 		camera.setToOrtho(false, width, height);
+		hudCam.setToOrtho(false, width, height);
 	}
 
 	@Override
@@ -137,21 +141,16 @@ public class MainGame implements ApplicationListener {
 	}
 	
 	private void drawHUD() {
-		font.draw(batch, String.format("Score %d", score), camera.position.x
-				- (Gdx.graphics.getWidth() / 2),
-				camera.position.y + (Gdx.graphics.getHeight() / 2) -
-				font.getCapHeight() - 10);
-		font.draw(batch, String.format("Level %d", levelNo), camera.position.x
-				- (Gdx.graphics.getWidth() / 2),
-				camera.position.y + (Gdx.graphics.getHeight() / 2) - 5);
-		float heatWidth = (Gdx.graphics.getWidth() * player.overheat);
-		float heatYPos = (camera.position.y - (Gdx.graphics.getHeight() / 2));
-		float heatXPos = (camera.position.x - (Gdx.graphics.getWidth() / 2));
-		heat.setPosition(heatXPos, heatYPos);
-		heat.setSize((int) heatWidth, 8);
-		heat.draw(batch);
-		batch.end();
+		barBatch.setProjectionMatrix(hudCam.combined);
 		barBatch.begin();
+		font.draw(barBatch, String.format("Score %d", score), 0,
+				Gdx.graphics.getHeight() - font.getCapHeight() - 10);
+		font.draw(barBatch, String.format("Level %d", levelNo), 0,
+				Gdx.graphics.getHeight() - 5);
+		float heatWidth = (Gdx.graphics.getWidth() * player.overheat);
+		heat.setPosition(0, 0);
+		heat.setSize((int) heatWidth, 8);
+		heat.draw(barBatch);
 		barFire.setPosition(heatWidth - 48, 0);
 		barFire.draw(barBatch, Gdx.graphics.getDeltaTime());
 		barBatch.end();

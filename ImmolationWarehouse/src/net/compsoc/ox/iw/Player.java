@@ -80,7 +80,7 @@ class Player {
         rightArm.setScale(1.0f, 1.0f);
         rightArm.setOrigin(0.5f * armWidth, 0.0f);
         
-        setPosition(x, y);
+        setPosition(level.map.startX * 64 + 32, level.map.startY * 64 + 32);
     }
     
     public void setPosition(float x, float y) {
