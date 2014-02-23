@@ -57,7 +57,7 @@ public class Tile {
 		case Wall:
 			imagename = "wall";
 			flammable = true;
-			flammability = 0.001f;
+			flammability = 0.005f;
 			extinguishchance = 0.001f;
 			solid = true;
 			destructable = false;
@@ -67,8 +67,8 @@ public class Tile {
 		case Floor:
 			imagename = "floor";
 			flammable = true;
-			flammability = 0.01f;
-			extinguishchance = 0.005f;
+			flammability = 0.02f;
+			extinguishchance = 0.02f;
 			solid = false;
 			destructable = false;
 			hitpoints = 0;
@@ -77,7 +77,7 @@ public class Tile {
 		case Table:
 			imagename = "table";
 			flammable = true;
-			flammability = 0.2f;
+			flammability = 0.6f;
 			extinguishchance = 0.01f;
 			solid = true;
 			destructable = true;
@@ -87,7 +87,7 @@ public class Tile {
 		case Barrel:
 			imagename = "barrel";
 			flammable = true;
-			flammability = 0.2f;
+			flammability = 0.6f;
 			extinguishchance = 0.00f;
 			solid = true;
 			destructable = true;
@@ -96,12 +96,12 @@ public class Tile {
 			break;
 		case Door:
 			imagename = "door";
-			flammable = false;
-			flammability = 0.0f;
+			flammable = true;
+			flammability = 0.01f;
 			extinguishchance = 0.0f;
 			solid = true;
 			destructable = true;
-			hitpoints = 50;
+			hitpoints = 40;
 			pointsPerDamage = 20;
 			break;
 		case GlassH:
