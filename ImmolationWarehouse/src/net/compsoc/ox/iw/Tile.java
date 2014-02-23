@@ -100,8 +100,8 @@ public class Tile {
 			flammability = 0.0f;
 			extinguishchance = 0.0f;
 			solid = true;
-			destructable = false;
-			hitpoints = 0;
+			destructable = true;
+			hitpoints = 50;
 			pointsPerDamage = 20;
 			break;
 		case GlassH:
