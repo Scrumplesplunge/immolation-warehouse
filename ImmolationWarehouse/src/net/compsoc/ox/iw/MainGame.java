@@ -138,7 +138,13 @@ public class MainGame implements ApplicationListener {
 		player.render(batch);
 		batch.end();
 		drawHUD();
+		
+		// Check for endgame.
+		AABB end = currentLevel.getTileAt(currentLevel.getEndX(), currentLevel.getEndY()).getAABB();
+		AABB ply = player.getAABB();
+		if (end.collidesWith(ply)) advanceLevel();
 	}
+	
 
 	@Override
 	public void resize(int width, int height) {

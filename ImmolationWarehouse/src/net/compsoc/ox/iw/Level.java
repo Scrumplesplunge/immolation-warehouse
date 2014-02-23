@@ -153,6 +153,10 @@ public class Level {
 		return map.getTileAt(x, y);
 	}
 	
+	public Tile getTileAt(int x, int y) {
+		return map.getTileAt(x, y);
+	}
+	
 	// Apply player fire to the level at the given coordinates
 	public void applyPlayerFire(float x, float y) {
 		int n = (int)(Math.random() * 16.0d);
