@@ -65,7 +65,6 @@ public class Tile {
 		case Table:
 			imagename = "table";
 			flammable = true;
-			onFire = true;
 			solid = true;
 			destructable = true;
 			hitpoints = 100;
@@ -73,21 +72,18 @@ public class Tile {
 		case Barrel:
 			imagename = "barrel";
 			flammable = true;
-			onFire = false;
 			destructable = true;
-			hitpoints = 10;
+			hitpoints = 50;
 			break;
 		case Start:
 			imagename = "start";
 			flammable = false;
-			onFire = false;
 			destructable = false;
 			hitpoints = 0;
 			break;
 		case End:
 			imagename = "end";
 			flammable = false;
-			onFire = false;
 			destructable = false;
 			hitpoints = 0;
 			break;
@@ -141,7 +137,20 @@ public class Tile {
 	
 	// Apply given damage to this tile (if it is destructable)
 	public void damage(int dmg) {
+		// Apply damage
 		if (destructable) hitpoints = Math.max(0, hitpoints-dmg);
+		
+		// Destroy tile if hitpoints drop to zero
+		if (destructable && hitpoints == 0) destroy();
+	}
+	
+	// Break this tile (if it is destructable)
+	private void destroy() {
+		if (destructable) {
+			solid = false;
+			destructable = false;
+			setImage(imagename + "_broken.png");
+		}
 	}
 	
 	// Update the tile
@@ -153,13 +162,6 @@ public class Tile {
 				firedamagetick -= 0.1f;
 				damage(1);
 			}
-		}
-		
-		// Destroy tile if hitpoints drop to zero
-		if (destructable && hitpoints==0) {
-			solid = false;
-			destructable = false;
-			setImage(imagename + "_broken.png");
 		}
 		
 		// Update particle systems

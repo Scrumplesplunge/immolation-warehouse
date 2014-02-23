@@ -19,7 +19,7 @@ class Player {
     private static final float inertia = 0.01f, armInertia = 0.001f;
 
     // Position and velocity.
-    private float x, y, vx, vy;
+    private float x, y, vx, vy, target_bodyAngle;
     public float overheat = 0.0f;
     private float delta = 1.0f;
     private float speed = defaultSpeed;
@@ -95,7 +95,6 @@ class Player {
     private void updateSprites() {
     	float degrees = 180.0f / (float)Math.PI;
         float nvx = vx / speed, nvy = vy / speed;
-        bodyAngle = vx < 0 ? (float)Math.acos(nvy) : -(float)Math.acos(nvy);
         sprite.setRotation(bodyAngle * degrees);
         leftArm.setRotation(leftArmAngle * degrees);
         leftArm.setPosition(x - nvy * 0.35f * width - 0.5f * armWidth, y + nvx * 0.35f * height);
@@ -107,11 +106,20 @@ class Player {
     	float pi = (float)Math.PI;
     	return ((ang + pi) % (2 * pi) + 2 * pi) % (2 * pi) - pi;
     }
+    
+    private float angFromVec(float x, float y) {
+    	float ny = y / (float)Math.sqrt(x * x + y * y);
+    	return x < 0 ? (float)Math.acos(ny) : -(float)Math.acos(ny);
+    }
 
     // Update our position.
     public void update(float delta) {
     	this.delta = delta;
     	
+    	float lerp = (float)Math.pow(inertia, delta);
+    	bodyAngle += 10 * angNorm(target_bodyAngle - bodyAngle) * delta;
+    	vy = speed * (float)Math.cos(bodyAngle);
+    	vx = -speed * (float)Math.sin(bodyAngle);
         x += vx * delta;
         y += vy * delta;
         float leftArmAccel = 50.0f * angNorm(bodyAngle - leftArmAngle - leftArmAngVel / 15.0f);
@@ -160,19 +168,7 @@ class Player {
 
     // Change our velocity.
     public void setVelocity(float vx, float vy) {
-    	// Scale this velocity to match the speed.
-        float mul = (float) (speed / Math.sqrt(vx * vx + vy * vy));
-        vx *= mul;
-        vy *= mul;
-        
-    	float lerp = (float)Math.pow(inertia, delta);
-        this.vx = lerp * this.vx + (1 - lerp) * vx;
-        this.vy = lerp * this.vy + (1 - lerp) * vy;
-        
-    	// Scale the final velocity to match the speed.
-        mul = (float) (speed / Math.sqrt(this.vx * this.vx + this.vy * this.vy));
-        this.vx *= mul;
-        this.vy *= mul;
+    	target_bodyAngle = angFromVec(vx, vy);
     }
 
     // Disposal function.
