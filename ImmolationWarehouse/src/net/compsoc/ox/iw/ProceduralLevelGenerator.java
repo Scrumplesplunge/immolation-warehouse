@@ -5,9 +5,12 @@ package net.compsoc.ox.iw;
  * By James
  */
 public class ProceduralLevelGenerator {
+	// Map in progress
+	private static char[][] map;
+	
 	public static String[] generateLevel(int width, int height) {
 		// Prepare design map
-		char[][] map = new char[height][width];
+		map = new char[height][width];
 		for (int r = 0; r < height; r++) {
         	for (int c = 0; c < width; c++) {
         		map[r][c] = 'w';
