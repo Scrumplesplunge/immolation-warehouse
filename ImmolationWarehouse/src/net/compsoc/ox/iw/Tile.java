@@ -18,6 +18,7 @@ public class Tile {
 	
 	// Position in world (do not change, it won't do anything)
 	float posX, posY;
+	int pointsPerDamage;
 	
 	// Graphics for this tile
 	private Texture texture;		// Texture for the sprite
@@ -58,6 +59,7 @@ public class Tile {
 			solid = true;
 			destructable = false;
 			hitpoints = 0;
+			pointsPerDamage = 10;
 			break;
 		case Floor:
 			imagename = "floor";
@@ -66,6 +68,7 @@ public class Tile {
 			solid = false;
 			destructable = false;
 			hitpoints = 0;
+			pointsPerDamage = 2;
 			break;
 		case Table:
 			imagename = "table";
@@ -74,13 +77,15 @@ public class Tile {
 			solid = true;
 			destructable = true;
 			hitpoints = 100;
+			pointsPerDamage = 10;
 			break;
 		case Barrel:
 			imagename = "barrel";
 			flammable = true;
 			flammability = 0.2f;
-			destructable = false;
+			destructable = true;
 			hitpoints = 50;
+			pointsPerDamage = 50;
 			break;
 		case Start:
 			imagename = "start";
@@ -88,6 +93,7 @@ public class Tile {
 			flammability = 0.0f;
 			destructable = false;
 			hitpoints = 0;
+			pointsPerDamage = 1000;
 			break;
 		case End:
 			imagename = "end";
@@ -95,6 +101,7 @@ public class Tile {
 			flammability = 0.0f;
 			destructable = false;
 			hitpoints = 0;
+			pointsPerDamage = 1000;
 			break;
 		default:
 			break;
@@ -156,6 +163,8 @@ public class Tile {
 		
 		// Destroy tile if hitpoints drop to zero
 		if (destructable && hitpoints == 0) destroy();
+		
+		MainGame.score += pointsPerDamage / (destructable ? 1 : 2);
 	}
 	
 	// Break this tile (if it is destructable)

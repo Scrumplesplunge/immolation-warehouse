@@ -60,7 +60,7 @@ public class TileMap {
 					if (r > 0) grid[r-1][c].attemptToLight();
 					if (r < gridHeight-1) grid[r+1][c].attemptToLight();
 					if (c > 0) grid[r][c-1].attemptToLight();
-					if (c < gridHeight-1) grid[r][c+1].attemptToLight();
+					if (c < gridWidth-1) grid[r][c+1].attemptToLight();
 				}
 			}
 		}
@@ -138,6 +138,6 @@ public class TileMap {
 	
 	// Return the tile that the given coordinates occupy
 	public Tile getTileAt(float x, float y) {
-		return grid[(int)Math.floor(x / Tile.tileWidth)][(int)Math.floor(y / Tile.tileHeight)];
+		return grid[(int)Math.floor(y / Tile.tileHeight)][(int)Math.floor(x / Tile.tileWidth)];
 	}
 }
