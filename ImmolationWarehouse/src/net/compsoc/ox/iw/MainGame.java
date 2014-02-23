@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import net.compsoc.ox.iw.common.MusicManager;
+import net.compsoc.ox.iw.common.SoundManager;
 import aurelienribon.tweenengine.TweenManager;
 
 public class MainGame implements ApplicationListener {
@@ -27,8 +28,11 @@ public class MainGame implements ApplicationListener {
 	private SpriteBatch barBatch;
 	private GameControls controls;
 	public static MusicManager music = new MusicManager();
+	public static SoundManager sound = new SoundManager();
 	public static TweenManager tweenManager = new TweenManager();
 	public static BitmapFont font;
+	
+	public static String[] burnManScreams;
 	
 	public static int score = 0;
 	public static int levelNo = 1;
@@ -46,6 +50,20 @@ public class MainGame implements ApplicationListener {
 	public void create() {
 		//float w = Gdx.graphics.getWidth();
 		//float h = Gdx.graphics.getHeight();
+		
+		burnManScreams = new String[6];
+		sound.add("scream1", "scream1.ogg");
+		burnManScreams[0] = "scream1";
+		sound.add("scream2", "scream2.ogg");
+		burnManScreams[1] = "scream2";
+		sound.add("scream3", "scream3.ogg");
+		burnManScreams[2] = "scream3";
+		sound.add("scream4", "scream4.ogg");
+		burnManScreams[3] = "scream4";
+		sound.add("scream5", "scream5.ogg");
+		burnManScreams[4] = "scream5";
+		sound.add("scream6", "scream6.ogg");
+		burnManScreams[5] = "scream6";
 		
 		Texture texture = new Texture(Gdx.files.internal("heat.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -65,7 +83,7 @@ public class MainGame implements ApplicationListener {
 		batch = new SpriteBatch();
 		barBatch = new SpriteBatch();
 		
-		demoLevel = LevelFile.loadLevel("l5.iw");
+		demoLevel = LevelFile.loadLevel("level1");
 		player = new Player(demoLevel, 224.0f, 224.0f);
 		
 		//Font!
@@ -80,9 +98,9 @@ public class MainGame implements ApplicationListener {
 		
 		//Music!
 		music.add("music", "immolationwarehouse.ogg");
-		music.setVolume(1);
+		music.setVolume(0.45f);
 		music.setLooping("music", true);
-		//music.play("music");
+		music.play("music");
 	}
 
 	@Override
