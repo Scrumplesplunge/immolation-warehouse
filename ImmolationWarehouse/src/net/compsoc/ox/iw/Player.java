@@ -13,6 +13,7 @@ class Player {
     // Configuration.
     private static final float defaultSpeed = 256.0f;
     private static final float waterRefreshingness = 0.2f;
+    private static final int clumsyCrashyDamage = 40;
     private static final float width = 64.0f, height = 64.0f;
     private static final float overheatTime = 30.0f;
     private static final float armCraziness = 0.99f, armSpeed = 2000.0f;
@@ -114,6 +115,10 @@ class Player {
     	return x < 0 ? (float)Math.acos(ny) : -(float)Math.acos(ny);
     }
     
+    private void doDamage(float x, float y) {
+    	level.getTileAt(x, y).damage(clumsyCrashyDamage);
+    }
+    
     private float horizontalIndent(boolean resolveLeft, AABB other) {
     	if (resolveLeft) {
     		return 0.001f + aabb.x + aabb.w - other.x;
@@ -165,6 +170,7 @@ class Player {
 			AABB newAABB = new AABB(aabb.x - indent, aabb.y, aabb.w, aabb.h);
 			if (!level.collidesWith(newAABB)) {
 				setPosition(x - indent, y);
+				doDamage(x + Tile.tileWidth, y);
 				doHorizontal();
 				updateSprites();
 				GameControls.stunTimeout = stunTimeout;
@@ -175,6 +181,7 @@ class Player {
 			AABB newAABB = new AABB(aabb.x + indent, aabb.y, aabb.w, aabb.h);
 			if (!level.collidesWith(newAABB)) {
 				setPosition(x + indent, y);
+				doDamage(x - Tile.tileWidth, y);
 				doHorizontal();
 				updateSprites();
 				GameControls.stunTimeout = stunTimeout;
@@ -191,6 +198,7 @@ class Player {
 			AABB newAABB = new AABB(aabb.x, aabb.y - indent, aabb.w, aabb.h);
 			if (!level.collidesWith(newAABB)) {
 				setPosition(x, y - indent);
+				doDamage(x, y + Tile.tileHeight);
 				doVertical();
 				updateSprites();
 				GameControls.stunTimeout = stunTimeout;
@@ -201,6 +209,7 @@ class Player {
 			AABB newAABB = new AABB(aabb.x, aabb.y + indent, aabb.w, aabb.h);
 			if (!level.collidesWith(newAABB)) {
 				setPosition(x, y + indent);
+				doDamage(x, y - Tile.tileHeight);
 				doVertical();
 				updateSprites();
 				GameControls.stunTimeout = stunTimeout;
