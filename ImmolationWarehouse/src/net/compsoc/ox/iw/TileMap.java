@@ -175,6 +175,6 @@ public class TileMap {
 	}
 	
 	public Tile getTileAt(int x, int y) {
-		return grid[y][x];
+		return (0 <= y && y < gridHeight && 0 <= x && x < gridWidth) ? grid[y][x] : null;
 	}
 }

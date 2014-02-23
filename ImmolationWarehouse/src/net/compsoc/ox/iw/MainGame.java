@@ -39,7 +39,8 @@ public class MainGame implements ApplicationListener {
 	public static int levelNo = 1;
 
     // Global instances are literally the best of the things.
-    public static ParticleEffect fire = new ParticleEffect();
+	public static ParticleEffect fire = new ParticleEffect();
+	public static ParticleEffect fire_reduced = new ParticleEffect();
     public static ParticleEffect barFire = new ParticleEffect();
     
     private static Sprite heat;
@@ -70,9 +71,12 @@ public class MainGame implements ApplicationListener {
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion region = new TextureRegion(texture, 0, 0, 8, 8);
 		heat = new Sprite(region);
-		
+
 		// IT'S A HACK
 		fire.load(Gdx.files.internal("fire.p"), Gdx.files.internal(""));
+
+		// IT'S A HACK
+		fire_reduced.load(Gdx.files.internal("fire_reduced.p"), Gdx.files.internal(""));
 		
 		barFire.load(Gdx.files.internal("barfire.p"), Gdx.files.internal(""));
 		

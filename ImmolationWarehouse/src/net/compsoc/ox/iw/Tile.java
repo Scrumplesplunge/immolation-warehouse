@@ -160,7 +160,7 @@ public class Tile {
 		setImage(imagename + ".png");
 		
 		// Prepare fire particle effect
-		fire = new ParticleEffect(MainGame.fire);
+		fire = new ParticleEffect(MainGame.fire_reduced);
 		fire.setPosition(posX + (tileWidth*0.5f), posY + (tileHeight*0.5f));
 	}
 	
