@@ -175,8 +175,8 @@ class Player {
 			// Try to resolve by moving character to the left.
 			AABB newAABB = new AABB(aabb.x - indent, aabb.y, aabb.w, aabb.h);
 			if (!level.collidesWith(newAABB)) {
+				doDamage(other.x + other.w * 0.5f, other.y + other.h * 0.5f);
 				setPosition(x - indent, y);
-				doDamage(x + Tile.tileWidth, y);
 				doHorizontal();
 				updateSprites();
 				GameControls.stunTimeout = stunTimeout;
@@ -187,7 +187,7 @@ class Player {
 			AABB newAABB = new AABB(aabb.x + indent, aabb.y, aabb.w, aabb.h);
 			if (!level.collidesWith(newAABB)) {
 				setPosition(x + indent, y);
-				doDamage(x - Tile.tileWidth, y);
+				doDamage(other.x + other.w * 0.5f, other.y + other.h * 0.5f);
 				doHorizontal();
 				updateSprites();
 				GameControls.stunTimeout = stunTimeout;
@@ -204,7 +204,7 @@ class Player {
 			AABB newAABB = new AABB(aabb.x, aabb.y - indent, aabb.w, aabb.h);
 			if (!level.collidesWith(newAABB)) {
 				setPosition(x, y - indent);
-				doDamage(x, y + Tile.tileHeight);
+				doDamage(other.x + other.w * 0.5f, other.y + other.h * 0.5f);
 				doVertical();
 				updateSprites();
 				GameControls.stunTimeout = stunTimeout;
@@ -215,7 +215,7 @@ class Player {
 			AABB newAABB = new AABB(aabb.x, aabb.y + indent, aabb.w, aabb.h);
 			if (!level.collidesWith(newAABB)) {
 				setPosition(x, y + indent);
-				doDamage(x, y - Tile.tileHeight);
+				doDamage(other.x + other.w * 0.5f, other.y + other.h * 0.5f);
 				doVertical();
 				updateSprites();
 				GameControls.stunTimeout = stunTimeout;
