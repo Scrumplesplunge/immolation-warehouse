@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import net.compsoc.ox.iw.common.MusicManager;
+import net.compsoc.ox.iw.common.MusicTween;
 import net.compsoc.ox.iw.common.SoundManager;
 import aurelienribon.tweenengine.TweenManager;
 
@@ -97,7 +98,9 @@ public class MainGame implements ApplicationListener {
         font.setColor(0.0f, 1.0f, 0.0f, 1.0f);
 		
 		//Music!
+        new MusicTween();
 		music.add("music", "immolationwarehouse.ogg");
+		music.add("music2", "slowburn.ogg");
 		music.setVolume(0.45f);
 		music.setLooping("music", true);
 		music.play("music");
@@ -118,8 +121,11 @@ public class MainGame implements ApplicationListener {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
+		
 		// Update things
 		float delta = Gdx.graphics.getDeltaTime();
+
+		tweenManager.update(delta);
 		controls.onRender();
 		demoLevel.update(delta);
 		player.update(delta);

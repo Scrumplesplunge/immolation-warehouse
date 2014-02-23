@@ -7,6 +7,7 @@ public class GameControls implements InputProcessor, MainGameListener {
 	private int xDir = 0;
 	private int yDir = 0;
 	private int frameWindow = 0;
+	private boolean musicToggle = false;
 	
 	public static float stunTimeout = 0.0f;
 
@@ -44,6 +45,16 @@ public class GameControls implements InputProcessor, MainGameListener {
 			return true;
 		case Input.Keys.RIGHT:
 			MainGame.nudgeCamera(64, 0);
+			return true;
+		case Input.Keys.M:
+			if (!musicToggle) {
+				MainGame.music.transition("music2", 2.5f);
+				musicToggle = true;
+			}
+			else {
+				MainGame.music.transition("music", 2.5f);
+				musicToggle = false;
+			}
 			return true;
 		}
 		return false;
