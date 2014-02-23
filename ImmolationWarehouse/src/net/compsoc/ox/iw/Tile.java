@@ -77,7 +77,7 @@ public class Tile {
 		case Table:
 			imagename = "table";
 			flammable = true;
-			flammability = 0.4f;
+			flammability = 0.6f;
 			extinguishchance = 0.01f;
 			solid = true;
 			destructable = true;
@@ -87,7 +87,7 @@ public class Tile {
 		case Barrel:
 			imagename = "barrel";
 			flammable = true;
-			flammability = 0.4f;
+			flammability = 0.6f;
 			extinguishchance = 0.00f;
 			solid = true;
 			destructable = true;

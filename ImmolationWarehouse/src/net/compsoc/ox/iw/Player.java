@@ -307,7 +307,7 @@ class Player {
         
         updateSprites();
         
-        MainGame.positionCamera(x, y, 0.0f, 1.0f);
+        MainGame.positionCamera(x, y, 0.0f, 1.5f);
         fire.update(delta);
     }
 
