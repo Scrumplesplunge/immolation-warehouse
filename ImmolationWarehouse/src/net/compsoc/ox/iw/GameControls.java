@@ -6,6 +6,7 @@ public class GameControls implements InputProcessor, MainGameListener {
 	
 	private int xDir = 0;
 	private int yDir = 0;
+	private int frameWindow = 0;
 	
 	public static float stunTimeout = 0.0f;
 
@@ -53,18 +54,22 @@ public class GameControls implements InputProcessor, MainGameListener {
 		switch (keycode) {
 		case Input.Keys.W:
 			//Stop travel upwards.
+			frameWindow = 2;
 			yDir -= 1;
 			return true;
 		case Input.Keys.A:
 			//Stop travel left.
+			frameWindow = 2;
 			xDir += 1;
 			return true;
 		case Input.Keys.S:
 			//Stop travel down.
+			frameWindow = 2;
 			yDir += 1;
 			return true;
 		case Input.Keys.D:
 			//Stop travel right.
+			frameWindow = 2;
 			xDir -= 1;
 			return true;
 		}
@@ -131,10 +136,10 @@ public class GameControls implements InputProcessor, MainGameListener {
 	 */
 	public void onRender() {
 		//If the player is attempting to move directions, change their facing.
-		if (stunTimeout <= 0 && (xDir != 0 || yDir != 0)) {
+		if (stunTimeout <= 0 && (xDir != 0 || yDir != 0) && frameWindow == 0) {
 			MainGame.player.setVelocity(xDir, yDir);
 		}
-		
+		frameWindow = Math.min(0, frameWindow);
 		float delta = Gdx.graphics.getDeltaTime();
 		stunTimeout -= delta;
 	}
