@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 class Player {
     // Configuration.
     private static final float defaultSpeed = 256.0f;
+    private static final float waterRefreshingness = 0.2f;
     private static final float width = 64.0f, height = 64.0f;
     private static final float overheatTime = 30.0f;
     private static final float armCraziness = 0.99f, armSpeed = 2000.0f;
@@ -270,6 +271,18 @@ class Player {
         		}
         	}
         }
+        
+        Pickup[] pickups = level.getIntersectingPickups(aabb);
+        for (int i = 0; i < pickups.length; i++) {
+        	switch (pickups[i].type) {
+        	case Water:
+        		overheat = (float)Math.max(0, overheat - waterRefreshingness);
+        		break;
+        	default:
+        		System.out.println("ERMAGERD");
+        	}
+        }
+        level.removePickups(pickups);
         
         updateSprites();
         
