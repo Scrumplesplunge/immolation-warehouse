@@ -146,11 +146,12 @@ public class Level {
 	
 	// Apply player fire to the level at the given coordinates
 	public void applyPlayerFire(float x, float y) {
-		int n = (int)(Math.random() * 20.0d);
+		int n = (int)(Math.random() * 16.0d);
 		for(int i = 0; i < n; i++) {
 			float fx = x + (float)(Math.random() * 128.0d) - 64.0f;
 			float fy = y + (float)(Math.random() * 128.0d) - 64.0f;
-			getTileAt(fx, fy).attemptToLight();
+			Tile t = getTileAt(fx, fy);
+			if (t != null) t.attemptToLight();
 		}
 	}
 }
