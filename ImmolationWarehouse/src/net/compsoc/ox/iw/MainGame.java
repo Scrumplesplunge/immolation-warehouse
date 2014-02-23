@@ -91,7 +91,7 @@ public class MainGame implements ApplicationListener {
 		batch = new SpriteBatch();
 		barBatch = new SpriteBatch();
 		
-		currentLevel = LevelFile.loadLevel("demolevel");
+		currentLevel = LevelFile.loadLevel("hub");
 		//currentLevel = new Level(ProceduralLevelGenerator.generateLevel(40,30), "proclevel");
 		player = new Player(currentLevel);
 		
@@ -160,7 +160,10 @@ public class MainGame implements ApplicationListener {
 		AABB ply = player.getAABB();
 		if (end.collidesWith(ply)) advanceLevel();
 		for(int k = 0; k < 9; k++) {
-			if (hubends[k].collidesWith(ply)) runLevel(hublinks[k]);
+			if (hubends[k].collidesWith(ply)) {
+				System.out.println(k);
+				runLevel(hublinks[k]);
+			}
 		}
 	}
 	
