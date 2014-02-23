@@ -22,8 +22,14 @@ public class Pickup {
 	private Texture texture;		// Texture for the sprite
 	private Sprite sprite;			// Sprite for this tile
 	
+	// AABB for this pickup
+	private AABB aabb;
+	
 	// State of this pickup
 	String imagename = "";			// WITHOUT extension (png assumed)
+	
+	// Accessors
+	public AABB getAABB() { return aabb; }
 	
 	// Constructor
 	public Pickup(GamePickupType type, float posX, float posY) {
@@ -39,6 +45,9 @@ public class Pickup {
 		// Note pickup position
 		this.posX = posX;
 		this.posY = posY;
+		
+		// Build AABB
+		aabb = new AABB(posX, posY, pickupWidth, pickupHeight);
 		
 		// Prepare tile graphic (this is the only case we DO NOT dispose the texture first)
 		setImage(imagename + ".png");
