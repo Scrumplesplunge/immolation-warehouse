@@ -74,6 +74,10 @@ public class Level {
         			// MAGIC HERE
         			npcs.add(new NPC(this, (c + 0.5f) * Tile.tileWidth, (r + 0.5f) * Tile.tileHeight));
         			break;
+        		case '!':
+        			break;
+        		case 'X':
+        			break;
         		default:
         			// Do nothing
         			break;

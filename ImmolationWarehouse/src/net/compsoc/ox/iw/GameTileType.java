@@ -9,5 +9,7 @@ public enum GameTileType {
 	Barrel,
 	Door,
 	GlassH,
-	GlassV
+	GlassV,
+	HubPortal,
+	HubController
 }
