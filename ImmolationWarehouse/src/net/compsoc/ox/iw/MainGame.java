@@ -84,7 +84,7 @@ public class MainGame implements ApplicationListener {
 		batch = new SpriteBatch();
 		barBatch = new SpriteBatch();
 		
-		currentLevel = LevelFile.loadLevel("level1");
+		currentLevel = LevelFile.loadLevel("level9");
 		player = new Player(currentLevel);
 		
 		//Font!
