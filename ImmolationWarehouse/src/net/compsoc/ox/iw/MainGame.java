@@ -72,9 +72,9 @@ public class MainGame implements ApplicationListener {
 		heat = new Sprite(region);
 		
 		// IT'S A HACK
-		fire.load(Gdx.files.internal("fire.p"), Gdx.files.internal("."));
+		fire.load(Gdx.files.internal("fire.p"), Gdx.files.internal(""));
 		
-		barFire.load(Gdx.files.internal("barfire.p"), Gdx.files.internal("."));
+		barFire.load(Gdx.files.internal("barfire.p"), Gdx.files.internal(""));
 		
 		controls = new GameControls();
 		Gdx.input.setInputProcessor(controls);
