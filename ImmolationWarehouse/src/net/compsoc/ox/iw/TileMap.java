@@ -60,7 +60,7 @@ public class TileMap {
 					if (r > 0) grid[r-1][c].attemptToLight();
 					if (r < gridHeight-1) grid[r+1][c].attemptToLight();
 					if (c > 0) grid[r][c-1].attemptToLight();
-					if (c < gridHeight-1) grid[r][c+1].attemptToLight();
+					if (c < gridWidth-1) grid[r][c+1].attemptToLight();
 				}
 			}
 		}

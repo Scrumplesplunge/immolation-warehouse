@@ -143,4 +143,14 @@ public class Level {
 	public Tile getTileAt(float x, float y) {
 		return map.getTileAt(x, y);
 	}
+	
+	// Apply player fire to the level at the given coordinates
+	public void applyPlayerFire(float x, float y) {
+		int n = (int)(Math.random() * 20.0d);
+		for(int i = 0; i < n; i++) {
+			float fx = x + (float)(Math.random() * 128.0d) - 64.0f;
+			float fy = y + (float)(Math.random() * 128.0d) - 64.0f;
+			getTileAt(fx, fy).attemptToLight();
+		}
+	}
 }
