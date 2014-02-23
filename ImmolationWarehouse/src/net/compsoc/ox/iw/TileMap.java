@@ -138,6 +138,9 @@ public class TileMap {
 	
 	// Return the tile that the given coordinates occupy
 	public Tile getTileAt(float x, float y) {
-		return grid[(int)Math.floor(y / Tile.tileHeight)][(int)Math.floor(x / Tile.tileWidth)];
+		int r = (int)Math.floor(y / Tile.tileHeight);
+		int c = (int)Math.floor(x / Tile.tileWidth);
+		if (r < 0 || r >= gridHeight || c < 0 || c >= gridWidth) return null; 
+		return grid[r][c];
 	}
 }
