@@ -129,19 +129,42 @@ class Player {
     	}
     }
     
+    private void doHorizontal() {
+    	if (GameControls.stunTimeout < 0.0f) {
+    		vx = -vx;
+    		target_bodyAngle = -target_bodyAngle;
+    		bodyAngle = -bodyAngle;
+    	} else {
+    		if (Math.random() < 0.5) {
+				target_bodyAngle = bodyAngle = 0;
+			} else {
+				target_bodyAngle = bodyAngle = (float)Math.PI;
+			}
+    	}
+    }
+    
+    private void doVertical() {
+    	if (GameControls.stunTimeout < 0.0f) {
+    		vy = -vy;
+    		target_bodyAngle = -angNorm(target_bodyAngle + (float)Math.PI);
+    		bodyAngle = -angNorm(bodyAngle + (float)Math.PI);
+    	} else {
+    		if (Math.random() < 0.5) {
+    			target_bodyAngle = bodyAngle = 0.5f * (float)Math.PI;
+    		} else {
+    			target_bodyAngle = bodyAngle = -0.5f * (float)Math.PI;
+    		}
+    	}
+    }
+    
     private boolean resolveHorizontal(boolean resolveLeft, AABB other) {
     	float indent = horizontalIndent(resolveLeft, other);
     	if (resolveLeft) {
 			// Try to resolve by moving character to the left.
 			AABB newAABB = new AABB(aabb.x - indent, aabb.y, aabb.w, aabb.h);
 			if (!level.collidesWith(newAABB)) {
-				// This resolved the collision!
 				setPosition(x - indent, y);
-				if (Math.random() < 0.5) {
-					target_bodyAngle = bodyAngle = 0;
-				} else {
-					target_bodyAngle = bodyAngle = (float)Math.PI;
-				}
+				doHorizontal();
 				updateSprites();
 				GameControls.stunTimeout = stunTimeout;
 				return true;
@@ -150,13 +173,8 @@ class Player {
 			// Try to resolve by moving character to the right.
 			AABB newAABB = new AABB(aabb.x + indent, aabb.y, aabb.w, aabb.h);
 			if (!level.collidesWith(newAABB)) {
-				// This resolved the collision!
 				setPosition(x + indent, y);
-				if (Math.random() < 0.5) {
-					target_bodyAngle = bodyAngle = 0;
-				} else {
-					target_bodyAngle = bodyAngle = (float)Math.PI;
-				}
+				doHorizontal();
 				updateSprites();
 				GameControls.stunTimeout = stunTimeout;
 				return true;
@@ -171,13 +189,8 @@ class Player {
 			// Try to resolve by moving character downwards.
 			AABB newAABB = new AABB(aabb.x, aabb.y - indent, aabb.w, aabb.h);
 			if (!level.collidesWith(newAABB)) {
-				// This resolved the collision!
 				setPosition(x, y - indent);
-				if (Math.random() < 0.5) {
-					target_bodyAngle = bodyAngle = 0.5f * (float)Math.PI;
-				} else {
-					target_bodyAngle = bodyAngle = -0.5f * (float)Math.PI;
-				}
+				doVertical();
 				updateSprites();
 				GameControls.stunTimeout = stunTimeout;
 				return true;
@@ -186,13 +199,8 @@ class Player {
 			// Try to resolve by moving character upwards.
 			AABB newAABB = new AABB(aabb.x, aabb.y + indent, aabb.w, aabb.h);
 			if (!level.collidesWith(newAABB)) {
-				// This resolved the collision!
 				setPosition(x, y + indent);
-				if (Math.random() < 0.5) {
-					target_bodyAngle = bodyAngle = 0.5f * (float)Math.PI;
-				} else {
-					target_bodyAngle = bodyAngle = -0.5f * (float)Math.PI;
-				}
+				doVertical();
 				updateSprites();
 				GameControls.stunTimeout = stunTimeout;
 				return true;
