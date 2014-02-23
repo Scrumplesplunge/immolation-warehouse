@@ -104,6 +104,10 @@ public class Level {
 		
 		// Update explosions
 		Vector2 cb = map.getExplosion();
+		//Only one splosion sound pls.
+		if (cb != null) {
+			MainGame.sound.play("splosion");
+		}
 		while(cb != null) {
 			for(int k = 0; k < 5; k++) applyPlayerFire(cb.x, cb.y);
 			applyDamageArea(cb.x, cb.y);

@@ -105,6 +105,7 @@ public class MainGame implements ApplicationListener {
 		music.setLooping("music", true);
 		music.play("music");
 		sound.add("failure", "failure.ogg");
+		sound.add("splosion", "splosion.ogg");
 	}
 
 	@Override
