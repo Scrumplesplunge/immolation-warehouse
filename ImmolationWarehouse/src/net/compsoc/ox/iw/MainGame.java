@@ -18,9 +18,6 @@ import net.compsoc.ox.iw.common.MusicTween;
 import net.compsoc.ox.iw.common.SoundManager;
 import aurelienribon.tweenengine.TweenManager;
 
-import java.util.List;
-import java.util.ArrayList;
-
 public class MainGame implements ApplicationListener {
 	
 	public static final String loggerTag = "MainGame";
@@ -50,6 +47,8 @@ public class MainGame implements ApplicationListener {
 	
 	private static Level currentLevel;
 	public static Player player;
+	
+	private static boolean skipFrame = true;
 	
 	@Override
 	public void create() {
@@ -127,7 +126,12 @@ public class MainGame implements ApplicationListener {
 	}
 
 	@Override
-	public void render() {		
+	public void render() {
+		if(skipFrame) {
+			skipFrame = false;
+			return;
+		}
+		
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
@@ -198,10 +202,12 @@ public class MainGame implements ApplicationListener {
 		String title = "level" + levelNo;
 		runLevel(title);
 		*/
+		skipFrame = true;
 		runLevel("hub");
 	}
 	
 	public static void runLevel(String title) {
+		skipFrame = true;
 		scoreAtLevelStart = score;
 		currentLevel.dispose();
 		currentLevel = LevelFile.loadLevel(title);
