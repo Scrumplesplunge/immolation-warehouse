@@ -20,25 +20,24 @@ public class TileMap {
         gridHeight = lines.length;
         grid = new Tile[gridWidth][gridHeight];
         GameTileType tileType;
-        for (int i = 0; i < gridHeight; i++) {
-        	for (int j = 0; j < gridWidth; j++) {
-        		switch (lines[i].charAt(j)) {
+        for (int r = 0; r < gridHeight; r++) {
+        	for (int c = 0; c < gridWidth; c++) {
+        		switch (lines[gridHeight-r-1].charAt(c)) {
         		case 'w':
         			tileType = GameTileType.Wall;
         			break;
         		case 'f':
         			tileType = GameTileType.Floor;
         			break;
+        		case 't':
+        			tileType = GameTileType.Table;
+        			break;
         		default:
         			tileType = GameTileType.Wall;
         			break;
         		}
         		//Pass X and Y coords to Tile.
-        		grid[i][j] = new Tile(tileType, j, i);
-        		
-        		if((i+j)%5==0) {
-        			grid[i][j].setFire(true);
-        		}
+        		grid[r][c] = new Tile(tileType, c, r);
         	}
         }
 	}
@@ -76,5 +75,17 @@ public class TileMap {
 				grid[r][c].dispose();
 			}
 		}
+	}
+	
+	// Does the given AABB intersect with the tilemap?
+	public boolean collidesWith(AABB aabb) {
+		// Collide with AABBs of all solid tiles
+		for(int r = 0; r < gridHeight; r++) {
+			for(int c = 0; c < gridWidth; c++) {
+				if(grid[r][c].isSolid() && aabb.collidesWith(grid[r][c].getAABB()))
+					return true;
+			}
+		}
+		return false;
 	}
 }

@@ -59,7 +59,7 @@ public class MainGame implements ApplicationListener {
 		batch = new SpriteBatch();
 		
 		demoLevel = LevelFile.loadLevel("l1.iw");
-		player = new Player(demoLevel, 32.0f, 32.0f);
+		player = new Player(demoLevel, 224.0f, 224.0f);
 		
 		//Font!
 		final String fontFileName = "font/scp.fnt";
