@@ -155,14 +155,16 @@ public class MainGame implements ApplicationListener {
 		
 		// Check for endgame.
 		AABB end = currentLevel.getTileAt(currentLevel.getEndX(), currentLevel.getEndY()).getAABB();
-		AABB[] hubends = currentLevel.getHubEnds();
-		String[] hublinks = currentLevel.getHubLinks();
 		AABB ply = player.getAABB();
-		if (end.collidesWith(ply)) advanceLevel();
-		for(int k = 0; k < 9; k++) {
-			if (hubends[k].collidesWith(ply)) {
-				System.out.println(k);
-				runLevel(hublinks[k]);
+		if (end.collidesWith(ply)) {
+			advanceLevel();
+		} else if (currentLevel.isHub()) {
+			AABB[] hubends = currentLevel.getHubEnds();
+			String[] hublinks = currentLevel.getHubLinks();
+			for(int k = 0; k < 9; k++) {
+				if (hubends[k].collidesWith(ply)) {
+					runLevel(hublinks[k]);
+				}
 			}
 		}
 	}
@@ -191,9 +193,12 @@ public class MainGame implements ApplicationListener {
 	}
 	
 	public static void advanceLevel() {
+		/*
 		levelNo += 1;
 		String title = "level" + levelNo;
 		runLevel(title);
+		*/
+		runLevel("hub");
 	}
 	
 	public static void runLevel(String title) {
@@ -219,9 +224,9 @@ public class MainGame implements ApplicationListener {
 	private void drawHUD() {
 		barBatch.setProjectionMatrix(hudCam.combined);
 		barBatch.begin();
-		font.draw(barBatch, String.format("Score %d", score), 0,
+		font.draw(barBatch, String.format("Score: %d", score), 0,
 				Gdx.graphics.getHeight() - font.getCapHeight() - 10);
-		font.draw(barBatch, String.format("Level %d", levelNo), 0,
+		font.draw(barBatch, String.format("Level: %s", currentLevel.levelName), 0,
 				Gdx.graphics.getHeight() - 5);
 		float heatWidth = (Gdx.graphics.getWidth() * player.overheat);
 		heat.setPosition(0, 0);

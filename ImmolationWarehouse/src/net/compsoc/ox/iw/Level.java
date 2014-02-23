@@ -18,7 +18,7 @@ public class Level {
 	// Tilemap representing level layout
 	private TileMap map;
 	
-	private String levelName;
+	public String levelName;
 	
 	// Level start and end points
 	private int startX, startY, endX, endY;

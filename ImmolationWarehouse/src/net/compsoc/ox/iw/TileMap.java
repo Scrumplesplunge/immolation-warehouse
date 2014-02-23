@@ -58,16 +58,16 @@ public class TileMap {
         			tileType = GameTileType.Floor;
         			break;
         		case '!':
-        			tileType = GameTileType.End;
+        			tileType = GameTileType.HubPortal;
         			break;
         		case 'X':
-        			tileType = GameTileType.Floor;
+        			tileType = GameTileType.HubController;
         			break;
         		case 'F':
-        			tileType = GameTileType.Floor;
+        			tileType = GameTileType.HubFloor;
         			break;
         		case 'B':
-        			tileType = GameTileType.Floor;
+        			tileType = GameTileType.HubBurner;
         			break;
         		default:
         			tileType = GameTileType.Wall;
