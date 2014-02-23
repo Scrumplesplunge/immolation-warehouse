@@ -138,4 +138,9 @@ public class Level {
 	public void removePickups(Pickup[] ps) {
 		pickups.removeAll(Arrays.asList(ps));
 	}
+	
+	// Return the tile that the given coordinates occupy
+	public Tile getTileAt(float x, float y) {
+		return map.getTileAt(x, y);
+	}
 }
