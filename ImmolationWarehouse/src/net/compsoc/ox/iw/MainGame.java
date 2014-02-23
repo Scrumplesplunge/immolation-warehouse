@@ -18,6 +18,9 @@ import net.compsoc.ox.iw.common.MusicTween;
 import net.compsoc.ox.iw.common.SoundManager;
 import aurelienribon.tweenengine.TweenManager;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class MainGame implements ApplicationListener {
 	
 	public static final String loggerTag = "MainGame";
@@ -88,7 +91,7 @@ public class MainGame implements ApplicationListener {
 		batch = new SpriteBatch();
 		barBatch = new SpriteBatch();
 		
-		currentLevel = LevelFile.loadLevel("demolevel");
+		currentLevel = LevelFile.loadLevel("hub");
 		//currentLevel = new Level(ProceduralLevelGenerator.generateLevel(40,30), "proclevel");
 		player = new Player(currentLevel);
 		
@@ -152,8 +155,16 @@ public class MainGame implements ApplicationListener {
 		
 		// Check for endgame.
 		AABB end = currentLevel.getTileAt(currentLevel.getEndX(), currentLevel.getEndY()).getAABB();
+		AABB[] hubends = currentLevel.getHubEnds();
+		String[] hublinks = currentLevel.getHubLinks();
 		AABB ply = player.getAABB();
 		if (end.collidesWith(ply)) advanceLevel();
+		for(int k = 0; k < 9; k++) {
+			if (hubends[k].collidesWith(ply)) {
+				System.out.println(k);
+				runLevel(hublinks[k]);
+			}
+		}
 	}
 	
 

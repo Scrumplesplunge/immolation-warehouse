@@ -254,7 +254,7 @@ class Player {
     	leftArmAngle += leftArmAngVel * delta;
     	rightArmAngle += rightArmAngVel * delta;
         
-        overheat += delta / overheatTime;
+        if(!level.isHub()) overheat += delta / overheatTime;
         
         if (overheat >= 1) {
         	MainGame.levelFailed();

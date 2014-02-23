@@ -57,6 +57,18 @@ public class TileMap {
         		case 'n':
         			tileType = GameTileType.Floor;
         			break;
+        		case '!':
+        			tileType = GameTileType.End;
+        			break;
+        		case 'X':
+        			tileType = GameTileType.Floor;
+        			break;
+        		case 'F':
+        			tileType = GameTileType.Floor;
+        			break;
+        		case 'B':
+        			tileType = GameTileType.Floor;
+        			break;
         		default:
         			tileType = GameTileType.Wall;
         			break;

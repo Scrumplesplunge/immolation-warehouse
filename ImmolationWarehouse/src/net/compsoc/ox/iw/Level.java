@@ -23,6 +23,23 @@ public class Level {
 	// Level start and end points
 	private int startX, startY, endX, endY;
 	
+	// Hub stuff
+	private boolean hub = false;
+	public boolean isHub() { return hub; }
+	private AABB[] hubends = new AABB[9];
+	private String[] hublinks = {	"level1",
+									"level2",
+									"level3",
+									"level4",
+									"level5",
+									"level6",
+									"level7",
+									"level8",
+									"level9"
+	};
+	public AABB[] getHubEnds() { return hubends; }
+	public String[] getHubLinks() { return hublinks; }
+	
 	// List of pickups
 	private List<Pickup> pickups = new ArrayList<Pickup>();
 	
@@ -56,6 +73,7 @@ public class Level {
         // each row will have the same number of columns.
         int gridWidth = lines[0].length();
         int gridHeight = lines.length;
+        int hubi = 0;
         for (int r = 0; r < gridHeight; r++) {
         	for (int c = 0; c < gridWidth; c++) {
         		switch (lines[gridHeight-r-1].charAt(c)) {
@@ -73,6 +91,13 @@ public class Level {
         		case 'n':
         			// MAGIC HERE
         			npcs.add(new NPC(this, (c + 0.5f) * Tile.tileWidth, (r + 0.5f) * Tile.tileHeight));
+        			break;
+        		case '!':
+        			hubends[hubi] = new AABB((int)c * Tile.tileWidth, (int)r * Tile.tileHeight, Tile.tileWidth, Tile.tileHeight);
+        			hubi++;
+        			break;
+        		case 'X':
+        			hub = true;
         			break;
         		default:
         			// Do nothing
