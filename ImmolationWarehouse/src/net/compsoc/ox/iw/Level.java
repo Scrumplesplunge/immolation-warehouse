@@ -16,7 +16,10 @@ import java.util.ArrayList;
  */
 public class Level {
 	// Tilemap representing level layout
-	public TileMap map;
+	private TileMap map;
+	
+	// Level start and end points
+	private int startX, startY, endX, endY;
 	
 	// List of pickups
 	private List<Pickup> pickups = new ArrayList<Pickup>();
@@ -25,10 +28,39 @@ public class Level {
 	private Texture background_tex;		// Texture for the background sprite
 	private Sprite background_sprite;	// Background sprite
 	
+	// Accessors
+	public int getStartX() { return startX; }
+	public int getStartY() { return startY; }
+	public int getEndX() { return endX; }
+	public int getEndY() { return endY; }
+	
 	// Constructor
 	public Level(String[] lines) {
 		// Load tilemap
         map = new TileMap(lines);
+        
+        // Load level data
+		// Well formed level files will have at least one row, and
+        // each row will have the same number of columns.
+        int gridWidth = lines[0].length();
+        int gridHeight = lines.length;
+        for (int r = 0; r < gridHeight; r++) {
+        	for (int c = 0; c < gridWidth; c++) {
+        		switch (lines[gridHeight-r-1].charAt(c)) {
+        		case 's':
+        			startX = c;
+        			startY = r;
+        			break;
+        		case 'e':
+        			endX = c;
+        			endY = r;
+        			break;
+        		default:
+        			// Do nothing
+        			break;
+        		}
+        	}
+        }
         
         // Place test pickup
         pickups.add(new Pickup(GamePickupType.Water, 128.0f, 128.0f));
@@ -96,7 +128,7 @@ public class Level {
 		int i = 0;
 		Pickup[] result = new Pickup[n];
 		for (Pickup p : pickups) {
-			result[i++] = p;
+			if(aabb.collidesWith(p.getAABB())) result[i++] = p;
 		}
 		
 		// Return array
