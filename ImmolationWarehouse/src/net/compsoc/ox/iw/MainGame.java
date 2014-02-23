@@ -141,6 +141,10 @@ public class MainGame implements ApplicationListener {
 		batch.end();
 		drawHUD();
 		
+		// Check if the player fell out of the map.
+		if (currentLevel.getTileAt((int)(player.getX() / Tile.tileWidth), (int)(player.getY() / Tile.tileHeight)) == null)
+			levelFailed();
+		
 		// Check for endgame.
 		AABB end = currentLevel.getTileAt(currentLevel.getEndX(), currentLevel.getEndY()).getAABB();
 		AABB ply = player.getAABB();
