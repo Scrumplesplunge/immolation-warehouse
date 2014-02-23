@@ -14,7 +14,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
  */
 public class Tile {
 	// Static information about all tiles
-	private static final float tileWidth = 64.0f, tileHeight = 64.0f;	// Tile dimensions (pixels)
+	public static final float tileWidth = 64.0f, tileHeight = 64.0f;	// Tile dimensions (pixels)
 	
 	// Position in world (do not change, it won't do anything)
 	float posX, posY;

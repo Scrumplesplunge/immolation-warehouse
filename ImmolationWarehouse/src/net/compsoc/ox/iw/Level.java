@@ -6,9 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 /*
  * Datatype representing a single level
@@ -47,6 +45,9 @@ public class Level {
         for (int r = 0; r < gridHeight; r++) {
         	for (int c = 0; c < gridWidth; c++) {
         		switch (lines[gridHeight-r-1].charAt(c)) {
+        		case 'l':
+        			pickups.add(new Pickup(GamePickupType.Water, (int)c * Tile.tileWidth, (int)r * Tile.tileHeight));
+        			break;
         		case 's':
         			startX = c;
         			startY = r;
@@ -61,9 +62,6 @@ public class Level {
         		}
         	}
         }
-        
-        // Place test pickup
-        pickups.add(new Pickup(GamePickupType.Water, 128.0f, 128.0f));
         
         // Prepare background image
         background_tex = new Texture(Gdx.files.internal("background.png"));
@@ -138,8 +136,6 @@ public class Level {
 	
 	// Remove the given pickups from the level
 	public void removePickups(Pickup[] ps) {
-		for (Pickup p : pickups) {
-			pickups.remove(p);
-		}
+		pickups.removeAll(Arrays.asList(ps));
 	}
 }

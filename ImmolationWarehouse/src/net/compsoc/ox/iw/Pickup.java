@@ -52,7 +52,8 @@ public class Pickup {
 		this.posY = posY;
 		
 		// Build AABB
-		aabb = new AABB(posX, posY, pickupWidth, pickupHeight);
+		aabb = new AABB(posX - (pickupWidth/2), posY - (pickupHeight/2),
+					pickupWidth*2, pickupHeight*2);
 		
 		// Prepare tile graphic (this is the only case we DO NOT dispose the texture first)
 		setImage(imagename + ".png");
