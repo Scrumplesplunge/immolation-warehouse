@@ -109,6 +109,8 @@ public class MainGame implements ApplicationListener {
 		barBatch.dispose();
 		demoLevel.dispose();
 		fire.dispose();
+		music.onDispose();
+		sound.onDispose();
 	}
 
 	@Override
