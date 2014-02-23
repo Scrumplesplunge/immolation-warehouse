@@ -53,6 +53,9 @@ public class GameControls implements InputProcessor, MainGameListener {
 			MainGame.runLevel(bonus[cycle]);
 			cycle = (cycle + 1) % bonus.length;
 			break;
+		case Input.Keys.ENTER:
+			MainGame.runLevel("hub");
+			break;
 		case Input.Keys.W:
 			//Travel upwards.
 			yDir += 1;
