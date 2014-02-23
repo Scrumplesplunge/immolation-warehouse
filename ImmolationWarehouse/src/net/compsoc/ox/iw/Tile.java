@@ -60,7 +60,7 @@ public class Tile {
 			hitpoints = 0;
 			break;
 		case Table:
-			imageFilename = "wall.png";
+			imageFilename = "table.png";
 			flammable = true;
 			solid = true;
 			destructable = true;
