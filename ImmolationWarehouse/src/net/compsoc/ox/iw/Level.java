@@ -58,4 +58,9 @@ public class Level {
 		// Collide AABB with tilemap and return result
 		return map.collidesWith(aabb);
 	}
+	
+	// Get list of AABBs in level that the given AABB intersects with
+	public AABB[] getIntersectingAABBs(AABB aabb) {
+		return map.getIntersectingAABBs(aabb);
+	}
 }

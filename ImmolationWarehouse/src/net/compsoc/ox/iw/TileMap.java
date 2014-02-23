@@ -94,4 +94,30 @@ public class TileMap {
 		}
 		return false;
 	}
+	
+	// Get list of AABBs in tilemap that the given AABB intersects with
+	public AABB[] getIntersectingAABBs(AABB aabb) {
+		// Calculate size of array
+		int n = 0;
+		for(int r = 0; r < gridHeight; r++) {
+			for(int c = 0; c < gridWidth; c++) {
+				if(grid[r][c].isSolid() && aabb.collidesWith(grid[r][c].getAABB()))
+					n++;
+			}
+		}
+		
+		// Build array
+		int i = 0;
+		AABB[] result = new AABB[n];
+		for(int r = 0; r < gridHeight; r++) {
+			for(int c = 0; c < gridWidth; c++) {
+				if(grid[r][c].isSolid() && aabb.collidesWith(grid[r][c].getAABB()))
+					result[i] = grid[r][c].getAABB();
+			}
+		}
+		
+		// Return array
+		// God that was dumb code, wasn't it?
+		return result;
+	}
 }
