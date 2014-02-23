@@ -227,7 +227,7 @@ public class Level {
 		float pdiffY = MainGame.player.getY() - y;
 		float pdist = (float)Math.sqrt(pdiffX*pdiffX + pdiffY*pdiffY);
 		float dmg = (256.0f - pdist) / 256.0f;
-		dmg = dmg * 0.5f;
+		dmg = dmg * 0.3f;
 		MainGame.player.overheat += Math.max(0, dmg);
 	}
 }
