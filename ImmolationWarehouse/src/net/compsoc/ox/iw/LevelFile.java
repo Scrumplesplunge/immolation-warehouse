@@ -29,7 +29,7 @@ public class LevelFile {
         }
         String creditsString = levelFile.readString();
         String[] lines = creditsString.split("\\n");
-        Level level = new Level(lines);
+        Level level = new Level(lines, fileName);
         return level;
 	}
 	

@@ -1,11 +1,13 @@
 package net.compsoc.ox.iw;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
 import java.util.*;
 
 /*
@@ -15,6 +17,8 @@ import java.util.*;
 public class Level {
 	// Tilemap representing level layout
 	private TileMap map;
+	
+	private String levelName;
 	
 	// Level start and end points
 	private int startX, startY, endX, endY;
@@ -33,10 +37,10 @@ public class Level {
 	public int getEndY() { return endY; }
 	
 	// Constructor
-	public Level(String[] lines) {
+	public Level(String[] lines, String levelName) {
 		// Load tilemap
         map = new TileMap(lines);
-        
+        this.levelName = levelName;
         // Load level data
 		// Well formed level files will have at least one row, and
         // each row will have the same number of columns.
@@ -101,6 +105,11 @@ public class Level {
 		for (Pickup p : pickups) {
 			p.dispose();
 		}
+		FileHandle possibleSoundFile = Gdx.files.internal("audio/" + levelName + ".ogg");
+        //Play the sound file if it exists, otherwise play a burnman scream.
+        if (possibleSoundFile.exists()) {
+            MainGame.sound.remove(levelName);
+        }
 	}
 	
 	// Does the given AABB intersect with the level?

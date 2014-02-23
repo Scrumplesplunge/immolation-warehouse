@@ -156,8 +156,17 @@ public class MainGame implements ApplicationListener {
 	
 	public static void levelFailed() {
 		score = scoreAtLevelStart;
+		currentLevel.dispose();
 		currentLevel = LevelFile.loadLevel("level" + String.valueOf(levelNo));
 		sound.play("failure");
+		player = new Player(currentLevel);
+	}
+	
+	public static void advanceLevel() {
+		score = scoreAtLevelStart;
+		currentLevel.dispose();
+		levelNo += 1;
+		currentLevel = LevelFile.loadLevel("level" + String.valueOf(levelNo));
 		player = new Player(currentLevel);
 	}
 	
