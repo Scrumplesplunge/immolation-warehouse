@@ -23,7 +23,7 @@ public class MainGame implements ApplicationListener {
 	
 	private static OrthographicCamera camera;
 	private SpriteBatch batch;
-	private SpriteBatch barBatch = new SpriteBatch();
+	private SpriteBatch barBatch;
 	private GameControls controls;
 	public static MusicManager music = new MusicManager();
 	public static TweenManager tweenManager = new TweenManager();
@@ -61,6 +61,7 @@ public class MainGame implements ApplicationListener {
 		
 		camera = new OrthographicCamera(512, 512);
 		batch = new SpriteBatch();
+		barBatch = new SpriteBatch();
 		
 		demoLevel = LevelFile.loadLevel("l1.iw");
 		player = new Player(demoLevel, 224.0f, 224.0f);
