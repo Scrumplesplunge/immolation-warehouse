@@ -30,15 +30,18 @@ public class Tile {
 	// State of this tile
 	private String imagename = "";			// WITHOUT extension (png assumed)
 	private boolean flammable = true;
+	private float flammability = 0.005f;
 	private boolean onFire = false;
 	private boolean solid = false;
 	private boolean destructable = false;
 	private int hitpoints = 0;
 	private float firedamagetick = 0.0f;
+	private boolean attemptfirespread = false;
 	
 	// Accessors
 	public AABB getAABB() { return aabb; }
 	public boolean isFlammable() { return flammable; }
+	public float getFlammability() { return flammability; }
 	public boolean isOnFire() { return onFire; }
 	public boolean isSolid() { return solid; }
 	public boolean isDestructable() { return destructable; }
@@ -51,6 +54,7 @@ public class Tile {
 		case Wall:
 			imagename = "wall";
 			flammable = true;
+			flammability = 0.001f;
 			solid = true;
 			destructable = false;
 			hitpoints = 0;
@@ -58,6 +62,7 @@ public class Tile {
 		case Floor:
 			imagename = "floor";
 			flammable = true;
+			flammability = 0.01f;
 			solid = false;
 			destructable = false;
 			hitpoints = 0;
@@ -65,6 +70,7 @@ public class Tile {
 		case Table:
 			imagename = "table";
 			flammable = true;
+			flammability = 0.2f;
 			solid = true;
 			destructable = true;
 			hitpoints = 100;
@@ -72,18 +78,21 @@ public class Tile {
 		case Barrel:
 			imagename = "barrel";
 			flammable = true;
-			destructable = true;
+			flammability = 0.2f;
+			destructable = false;
 			hitpoints = 50;
 			break;
 		case Start:
 			imagename = "start";
 			flammable = false;
+			flammability = 0.0f;
 			destructable = false;
 			hitpoints = 0;
 			break;
 		case End:
 			imagename = "end";
 			flammable = false;
+			flammability = 0.0f;
 			destructable = false;
 			hitpoints = 0;
 			break;
@@ -123,6 +132,11 @@ public class Tile {
 		texture.dispose();
 	}
 	
+	// Attempt (with this tile's flammability) to make this tile on fire (if it is flammable)
+	public void attemptToLight() {
+		if (Math.random() <= flammability) setFire(true);
+	}
+	
 	// Make this tile on fire / not on fire (if it is flammable)
 	public void setFire(boolean onFire) {
 		if(flammable) {
@@ -153,13 +167,24 @@ public class Tile {
 		}
 	}
 	
+	// Ask tile if it wants to spread fire - if it does, reset back to false
+	public boolean shouldSpreadFire() {
+		if (attemptfirespread) {
+			attemptfirespread = false;
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	// Update the tile
 	public void update(float delta) {
-		// Update hitpoints if on fire
-		if (onFire && destructable) {
+		// Update fire damage tick
+		if (onFire) {
 			firedamagetick += delta;
 			if (firedamagetick > 0.1f) {
 				firedamagetick -= 0.1f;
+				attemptfirespread = true;
 				damage(1);
 			}
 		}
