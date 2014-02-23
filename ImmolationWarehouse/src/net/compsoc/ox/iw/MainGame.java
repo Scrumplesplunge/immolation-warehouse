@@ -141,6 +141,7 @@ public class MainGame implements ApplicationListener {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		currentLevel.render(batch);
+		for (NPC n : currentLevel.npcs) n.render(batch);
 		player.render(batch);
 		batch.end();
 		drawHUD();

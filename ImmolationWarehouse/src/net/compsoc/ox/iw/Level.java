@@ -26,6 +26,9 @@ public class Level {
 	// List of pickups
 	private List<Pickup> pickups = new ArrayList<Pickup>();
 	
+	// List of npcs.
+	public List<NPC> npcs = new ArrayList<NPC>();
+	
 	// List of explosion locations
 	private List<Vector2> blasts = new ArrayList<Vector2>();
 	
@@ -66,6 +69,10 @@ public class Level {
         		case 'e':
         			endX = c;
         			endY = r;
+        			break;
+        		case 'n':
+        			// MAGIC HERE
+        			npcs.add(new NPC(this, (c + 0.5f) * Tile.tileWidth, (r + 0.5f) * Tile.tileHeight));
         			break;
         		default:
         			// Do nothing
@@ -115,6 +122,27 @@ public class Level {
 			cb.y = cb.y - 96.0f;
 			blasts.add(cb);
 			cb = map.getExplosion();
+		}
+		
+		// Update every NPC.
+		for (NPC n : npcs) {
+			n.update(delta);
+		}
+		
+		// Check for player intersections.
+		AABB ply = MainGame.player.getAABB();
+		for (NPC n : npcs) {
+			if (ply.collidesWith(n.getAABB())) n.burning = true;
+		}
+		
+		// Now check for pairwise intersections.
+		for (NPC n : npcs) {
+			for (NPC m : npcs) {
+				if (n == m) continue;
+				if ((n.burning || m.burning) && n.getAABB().collidesWith(m.getAABB())) {
+					n.burning = m.burning = true;
+				}
+			}
 		}
 	}
 	
