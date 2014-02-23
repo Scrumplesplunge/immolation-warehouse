@@ -128,7 +128,7 @@ public class Level {
 		int i = 0;
 		Pickup[] result = new Pickup[n];
 		for (Pickup p : pickups) {
-			result[i++] = p;
+			if(aabb.collidesWith(p.getAABB())) result[i++] = p;
 		}
 		
 		// Return array
