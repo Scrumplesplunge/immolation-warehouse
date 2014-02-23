@@ -11,5 +11,7 @@ public enum GameTileType {
 	GlassH,
 	GlassV,
 	HubPortal,
-	HubController
+	HubController,
+	HubFloor,
+	HubBurner
 }

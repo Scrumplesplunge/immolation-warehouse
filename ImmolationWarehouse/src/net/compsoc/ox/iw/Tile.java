@@ -162,6 +162,26 @@ public class Tile {
 			hitpoints = 0;
 			pointsPerDamage = 2;
 			break;
+		case HubFloor:
+			imagename = "floor";
+			flammable = false;
+			flammability = 0.0f;
+			extinguishchance = 0.0f;
+			solid = false;
+			destructable = false;
+			hitpoints = 0;
+			pointsPerDamage = 2;
+			break;
+		case HubBurner:
+			imagename = "floor";
+			flammable = true;
+			flammability = 0.2f;
+			extinguishchance = 0.0f;
+			solid = false;
+			destructable = false;
+			hitpoints = 0;
+			pointsPerDamage = 2;
+			break;
 		default:
 			break;
 		}
