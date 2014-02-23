@@ -24,7 +24,6 @@ class Player {
     // Position and velocity.
     private float x, y, vx, vy, target_bodyAngle;
     public float overheat = 0.0f;
-    private float delta = 1.0f;
     private float speed = defaultSpeed;
     
     // Collisions
@@ -221,8 +220,6 @@ class Player {
 
     // Update our position.
     public void update(float delta) {
-    	this.delta = delta;
-    	
     	float lerp = (float)Math.pow(inertia, delta);
     	bodyAngle += 10 * angNorm(target_bodyAngle - bodyAngle) * delta;
     	vy = speed * (float)Math.cos(bodyAngle);
@@ -281,6 +278,10 @@ class Player {
         	}
         }
         
+        // Set fire to level
+        level.applyPlayerFire(x, y);
+        
+        // Pickups
         Pickup[] pickups = level.getIntersectingPickups(aabb);
         for (int i = 0; i < pickups.length; i++) {
         	switch (pickups[i].type) {
