@@ -16,6 +16,9 @@ public class Tile {
 	// Static information about all tiles
 	private static final float tileWidth = 64.0f, tileHeight = 64.0f;	// Tile dimensions (pixels)
 	
+	// Position in world (do not change, it won't do anything)
+	float posX, posY;
+	
 	// Graphics for this tile
 	private Texture texture;		// Texture for the sprite
 	private Sprite sprite;			// Sprite for this tile
@@ -25,6 +28,7 @@ public class Tile {
 	private AABB aabb;
 	
 	// State of this tile
+	private String imagename = "";			// WITHOUT extension (png assumed)
 	private boolean flammable = true;
 	private boolean onFire = false;
 	private boolean solid = false;
@@ -43,52 +47,58 @@ public class Tile {
 	// Constructor
 	public Tile(GameTileType type, int tileX, int tileY) {
 		// Load settings for this tile type
-		String imageFilename = "";
 		switch(type) {
 		case Wall:
-			imageFilename = "wall.png";
+			imagename = "wall";
 			flammable = true;
 			solid = true;
 			destructable = false;
 			hitpoints = 0;
 			break;
 		case Floor:
-			imageFilename = "floor.png";
+			imagename = "floor";
 			flammable = true;
 			solid = false;
 			destructable = false;
 			hitpoints = 0;
 			break;
 		case Table:
-			imageFilename = "table.png";
+			imagename = "table";
 			flammable = true;
+			onFire = true;
 			solid = true;
 			destructable = true;
-			hitpoints = 128;
+			hitpoints = 100;
 			break;
 		default:
 			break;
 		}
 		
 		// Calculate pixel position of tile
-		float posX = (float)tileX * tileWidth;
-		float posY = (float)tileY * tileHeight;
+		posX = (float)tileX * tileWidth;
+		posY = (float)tileY * tileHeight;
 		
 		// Build AABB
 		aabb = new AABB(posX, posY, tileWidth, tileHeight);
 		
-		// Prepare tile graphic
-		texture = new Texture(Gdx.files.internal(imageFilename));
+		// Prepare tile graphic (this is the only case we DO NOT dispose the texture first)
+		setImage(imagename + ".png");
+		
+		// Prepare fire particle effect
+		fire = new ParticleEffect(MainGame.fire);
+		fire.setPosition(posX + (tileWidth*0.5f), posY + (tileHeight*0.5f));
+	}
+	
+	// Set the tile image to the given filename
+	// DO NOT FORGET to dispose the previous texture first
+	private void setImage(String filename) {
+		texture = new Texture(Gdx.files.internal(filename));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion region = new TextureRegion(texture, 0, 0, (int)tileWidth, (int)tileHeight);
 		sprite = new Sprite(region);
 		sprite.setScale(1.0f, 1.0f);
 		sprite.setOrigin(0.0f, 0.0f);
 		sprite.setPosition(posX, posY);
-		
-		// Prepare fire particle effect
-		fire = new ParticleEffect(MainGame.fire);
-		fire.setPosition(posX + (tileWidth*0.5f), posY + (tileHeight*0.5f));
 	}
 	
 	// Dispose of stuff when finished
@@ -118,10 +128,17 @@ public class Tile {
 		// Update hitpoints if on fire
 		if (onFire && destructable) {
 			firedamagetick += delta;
-			if (firedamagetick > 1.0f) {
-				firedamagetick -= 1.0f;
-				hitpoints = Math.max(0, hitpoints-1);
+			if (firedamagetick > 0.1f) {
+				firedamagetick -= 0.1f;
+				damage(1);
 			}
+		}
+		
+		// Destroy tile if hitpoints drop to zero
+		if (destructable && hitpoints==0) {
+			solid = false;
+			destructable = false;
+			setImage(imagename + "_broken.png");
 		}
 		
 		// Update particle systems
