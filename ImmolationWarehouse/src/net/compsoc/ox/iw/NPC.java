@@ -68,7 +68,7 @@ class NPC {
         fire.start();
 
         // Set up the player texture and sprite.
-        texture = new Texture(Gdx.files.internal("character.png"));
+        texture = new Texture(Gdx.files.internal("npc" + (int)(Math.floor(Math.random() * 5) + 1) + ".png"));
         texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
         TextureRegion region = new TextureRegion(texture, 0.0f, 0.0f, 1.0f, 1.0f);
 
