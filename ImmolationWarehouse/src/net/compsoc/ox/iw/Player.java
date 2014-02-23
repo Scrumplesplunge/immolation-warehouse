@@ -11,14 +11,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 class Player {
     // Configuration.
-    private static final float speed = 256.0f;
+    private static final float defaultSpeed = 256.0f;
     private static final float width = 64.0f, height = 64.0f;
     private static final float inertia = 0.01f;
 
     // Position and velocity.
     private float x, y, vx, vy;
-    private float overheat = 0.0f;
+    public float overheat = 0.0f;
     private float delta = 1.0f;
+    private float speed = defaultSpeed;
 
     // Level reference.
     private Level level;
@@ -64,6 +65,9 @@ class Player {
         this.delta = delta;
         x += vx * delta;
         y += vy * delta;
+        this.overheat += 0.01 * delta;
+        
+        this.speed = defaultSpeed * (1 + this.overheat);
         
         setPosition(x, y);
         
