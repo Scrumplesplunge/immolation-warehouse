@@ -94,6 +94,36 @@ public class Tile {
 			hitpoints = 50;
 			pointsPerDamage = 50;
 			break;
+		case Door:
+			imagename = "door";
+			flammable = false;
+			flammability = 0.0f;
+			extinguishchance = 0.0f;
+			solid = true;
+			destructable = false;
+			hitpoints = 0;
+			pointsPerDamage = 20;
+			break;
+		case GlassH:
+			imagename = "horizontal_glass";
+			flammable = false;
+			flammability = 0.0f;
+			extinguishchance = 0.0f;
+			solid = true;
+			destructable = true;
+			hitpoints = 10;
+			pointsPerDamage = 20;
+			break;
+		case GlassV:
+			imagename = "vertical_glass";
+			flammable = false;
+			flammability = 0.0f;
+			extinguishchance = 0.0f;
+			solid = true;
+			destructable = true;
+			hitpoints = 10;
+			pointsPerDamage = 20;
+			break;
 		case Start:
 			imagename = "start";
 			flammable = false;

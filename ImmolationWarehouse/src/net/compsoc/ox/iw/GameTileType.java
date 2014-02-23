@@ -6,5 +6,8 @@ public enum GameTileType {
 	Table,
 	Start,
 	End,
-	Barrel
+	Barrel,
+	Door,
+	GlassH,
+	GlassV
 }
