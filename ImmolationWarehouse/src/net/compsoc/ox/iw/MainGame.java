@@ -189,9 +189,11 @@ public class MainGame implements ApplicationListener {
 	}
 	
 	public static void levelFailed() {
+		skipFrame = true;
 		score = scoreAtLevelStart;
+		String restartname = currentLevel.levelName;
 		currentLevel.dispose();
-		currentLevel = LevelFile.loadLevel("level" + String.valueOf(levelNo));
+		currentLevel = LevelFile.loadLevel(restartname);
 		sound.play("failure");
 		player = new Player(currentLevel);
 	}
