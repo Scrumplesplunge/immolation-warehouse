@@ -97,11 +97,11 @@ public class Tile {
 		case Door:
 			imagename = "door";
 			flammable = true;
-			flammability = 0.01f;
+			flammability = 0.05f;
 			extinguishchance = 0.0f;
 			solid = true;
 			destructable = true;
-			hitpoints = 40;
+			hitpoints = 80;
 			pointsPerDamage = 20;
 			break;
 		case GlassH:
