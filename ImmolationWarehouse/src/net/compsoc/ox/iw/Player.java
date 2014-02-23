@@ -28,6 +28,10 @@ class Player {
     
     // Collisions
     private AABB aabb;
+    
+    public AABB getAABB() {
+    	return aabb;
+    }
 
     // Level reference.
     private Level level;

@@ -143,4 +143,8 @@ public class TileMap {
 		if (r < 0 || r >= gridHeight || c < 0 || c >= gridWidth) return null; 
 		return grid[r][c];
 	}
+	
+	public Tile getTileAt(int x, int y) {
+		return grid[y][x];
+	}
 }

@@ -137,6 +137,18 @@ public class MainGame implements ApplicationListener {
 		player.render(batch);
 		batch.end();
 		drawHUD();
+		
+		// Check for endgame.
+		AABB end = demoLevel.getTileAt(demoLevel.getEndX(), demoLevel.getEndY()).getAABB();
+		AABB ply = player.getAABB();
+		if (end.collidesWith(ply)) advanceLevel();
+	}
+	
+	public void advanceLevel() {
+		sound.stopAll();
+		demoLevel.dispose();
+		System.out.println("LOAD NEXT LEVEL");
+		demoLevel = LevelFile.loadLevel("level" + levelNo++);
 	}
 
 	@Override
