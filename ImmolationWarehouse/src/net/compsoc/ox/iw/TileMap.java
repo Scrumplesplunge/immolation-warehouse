@@ -54,6 +54,9 @@ public class TileMap {
         		case 'v':
         			tileType = GameTileType.GlassV;
         			break;
+        		case 'n':
+        			tileType = GameTileType.Floor;
+        			break;
         		default:
         			tileType = GameTileType.Wall;
         			break;
