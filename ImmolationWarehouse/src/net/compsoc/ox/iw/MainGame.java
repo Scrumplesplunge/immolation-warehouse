@@ -180,10 +180,15 @@ public class MainGame implements ApplicationListener {
 	}
 	
 	public static void advanceLevel() {
+		levelNo += 1;
+		String title = "level" + levelNo;
+		runLevel(title);
+	}
+	
+	public static void runLevel(String title) {
 		scoreAtLevelStart = score;
 		currentLevel.dispose();
-		levelNo += 1;
-		currentLevel = LevelFile.loadLevel("level" + String.valueOf(levelNo));
+		currentLevel = LevelFile.loadLevel(title);
 		player = new Player(currentLevel);
 	}
 	
