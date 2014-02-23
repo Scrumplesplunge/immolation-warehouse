@@ -105,6 +105,8 @@ public class Level {
 		// Update explosions
 		Vector2 cb = map.getExplosion();
 		while(cb != null) {
+			for(int k = 0; k < 5; k++) applyPlayerFire(cb.x, cb.y);
+			applyDamageArea(cb.x, cb.y);
 			cb.x = cb.x - 96.0f;
 			cb.y = cb.y - 96.0f;
 			blasts.add(cb);
@@ -197,12 +199,31 @@ public class Level {
 	
 	// Apply player fire to the level at the given coordinates
 	public void applyPlayerFire(float x, float y) {
-		int n = (int)(Math.random() * 16.0d);
+		int n = (int)(Math.random() * 18.0d);
 		for(int i = 0; i < n; i++) {
 			float fx = x + (float)(Math.random() * 128.0d) - 64.0f;
 			float fy = y + (float)(Math.random() * 128.0d) - 64.0f;
 			Tile t = getTileAt(fx, fy);
 			if (t != null) t.attemptToLight();
 		}
+	}
+	
+	// Apply a damage area to things in the level at the given coordinates
+	public void applyDamageArea(float x, float y) {
+		// Damage tiles
+		for(int r = -2; r <= 2; r++) {
+			for(int c = -2; c <= 2; c++) {
+				Tile t = getTileAt(x + (c * Tile.tileWidth), y + (r * Tile.tileHeight));
+				if (t != null) t.damage(100);
+			}
+		}
+		
+		// Damage player
+		float pdiffX = MainGame.player.getX() - x;
+		float pdiffY = MainGame.player.getY() - y;
+		float pdist = (float)Math.sqrt(pdiffX*pdiffX + pdiffY*pdiffY);
+		float dmg = (256.0f - pdist) / 256.0f;
+		dmg = dmg * 0.5f;
+		MainGame.player.overheat += Math.max(0, dmg);
 	}
 }
