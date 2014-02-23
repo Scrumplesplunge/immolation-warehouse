@@ -17,8 +17,7 @@ public class Tile {
 	public static final float tileWidth = 64.0f, tileHeight = 64.0f;	// Tile dimensions (pixels)
 	
 	// Position in world (do not change, it won't do anything)
-	float posX, posY;
-	int pointsPerDamage;
+	private float posX, posY;
 	
 	// Graphics for this tile
 	private Texture texture;		// Texture for the sprite
@@ -30,6 +29,7 @@ public class Tile {
 	
 	// State of this tile
 	private String imagename = "";			// WITHOUT extension (png assumed)
+	private GameTileType type;
 	private boolean flammable = true;
 	private float flammability = 0.005f;
 	private float extinguishchance = 0.005f;
@@ -39,6 +39,8 @@ public class Tile {
 	private int hitpoints = 0;
 	private float firedamagetick = 0.0f;
 	private boolean attemptfirespread = false;
+	private boolean exploding = false;
+	private int pointsPerDamage = 0;
 	
 	// Accessors
 	public AABB getAABB() { return aabb; }
@@ -86,7 +88,8 @@ public class Tile {
 			imagename = "barrel";
 			flammable = true;
 			flammability = 0.2f;
-			extinguishchance = 0.01f;
+			extinguishchance = 0.00f;
+			solid = true;
 			destructable = true;
 			hitpoints = 50;
 			pointsPerDamage = 50;
@@ -112,6 +115,9 @@ public class Tile {
 		default:
 			break;
 		}
+		
+		// Note tile type
+		this.type = type;
 		
 		// Calculate pixel position of tile
 		posX = (float)tileX * tileWidth;
@@ -179,6 +185,7 @@ public class Tile {
 			solid = false;
 			destructable = false;
 			setImage(imagename + "_broken.png");
+			if (type == GameTileType.Barrel) exploding = true;
 		}
 	}
 	
@@ -186,6 +193,16 @@ public class Tile {
 	public boolean shouldSpreadFire() {
 		if (attemptfirespread) {
 			attemptfirespread = false;
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	// Ask tile if it should generate an explosion - if it does, reset back to false
+	public boolean shouldExplode() {
+		if (exploding) {
+			exploding = false;
 			return true;
 		} else {
 			return false;

@@ -1,6 +1,7 @@
 package net.compsoc.ox.iw;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 /*
  * Datatype representing a 2D grid of Tiles
@@ -31,6 +32,9 @@ public class TileMap {
         			break;
         		case 't':
         			tileType = GameTileType.Table;
+        			break;
+        		case 'b':
+        			tileType = GameTileType.Barrel;
         			break;
         		case 'l':
         			tileType = GameTileType.Floor;
@@ -73,14 +77,18 @@ public class TileMap {
 		}
 	}
 	
-	// Render the tilemap
-	public void render(SpriteBatch batch) {
+	// Render the tilemap only
+	public void renderTiles(SpriteBatch batch) {
 		// Render all the tiles
 		for(int r = 0; r < gridHeight; r++) {
 			for(int c = 0; c < gridWidth; c++) {
 				grid[r][c].renderTile(batch);
 			}
 		}
+	}
+	
+	// Render the tilemap particles
+	public void renderParticles(SpriteBatch batch) {
 		// Render all tile particle effects
 		for(int r = 0; r < gridHeight; r++) {
 			for(int c = 0; c < gridWidth; c++) {
@@ -142,5 +150,18 @@ public class TileMap {
 		int c = (int)Math.floor(x / Tile.tileWidth);
 		if (r < 0 || r >= gridHeight || c < 0 || c >= gridWidth) return null; 
 		return grid[r][c];
+	}
+	
+	
+	// Get one new explosion position, or return null if none
+	public Vector2 getExplosion() {
+		for(int r = 0; r < gridHeight; r++) {
+			for(int c = 0; c < gridWidth; c++) {
+				if (grid[r][c].shouldExplode()) {
+					return new Vector2(c * Tile.tileWidth, r * Tile.tileHeight);
+				}
+			}
+		}
+		return null;
 	}
 }

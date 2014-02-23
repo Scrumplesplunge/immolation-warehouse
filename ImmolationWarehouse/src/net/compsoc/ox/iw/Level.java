@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import java.util.*;
 
 /*
@@ -21,6 +22,13 @@ public class Level {
 	
 	// List of pickups
 	private List<Pickup> pickups = new ArrayList<Pickup>();
+	
+	// List of explosion locations
+	private List<Vector2> blasts = new ArrayList<Vector2>();
+	
+	// Explosion blast decal image
+	private Texture blast_tex;			// Texture for the blast sprite
+	private Sprite blast_sprite;		// Blast sprite
 	
 	// Background image
 	private Texture background_tex;		// Texture for the background sprite
@@ -63,11 +71,19 @@ public class Level {
         	}
         }
         
+        // Prepare blast image
+        blast_tex = new Texture(Gdx.files.internal("explosion.png"));
+        blast_tex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+ 		TextureRegion region1 = new TextureRegion(blast_tex, 0, 0, 256, 256);
+ 		blast_sprite = new Sprite(region1);
+ 		blast_sprite.setScale(1.0f, 1.0f);
+ 		blast_sprite.setOrigin(0.0f, 0.0f);
+        
         // Prepare background image
         background_tex = new Texture(Gdx.files.internal("background.png"));
         background_tex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
- 		TextureRegion region = new TextureRegion(background_tex, 0, 0, 512, 512);
- 		background_sprite = new Sprite(region);
+ 		TextureRegion region2 = new TextureRegion(background_tex, 0, 0, 512, 512);
+ 		background_sprite = new Sprite(region2);
  		background_sprite.setScale(64.0f, 64.0f);
  		background_sprite.setOrigin(256.0f, 256.0f);
  		background_sprite.setPosition(0.0f, 0.0f);
@@ -75,9 +91,21 @@ public class Level {
 	
 	// Update the level
 	public void update(float delta) {
+		// Update map
 		map.update(delta);
+		
+		// Update pickups
 		for (Pickup p : pickups) {
 			p.update(delta);
+		}
+		
+		// Update explosions
+		Vector2 cb = map.getExplosion();
+		while(cb != null) {
+			cb.x = cb.x - 96.0f;
+			cb.y = cb.y - 96.0f;
+			blasts.add(cb);
+			cb = map.getExplosion();
 		}
 	}
 	
@@ -86,8 +114,17 @@ public class Level {
 		// Draw background
 		background_sprite.draw(batch);
 		
-		// Render the tilemap
-		map.render(batch);
+		// Render the tilemap tiles
+		map.renderTiles(batch);
+		
+		// Render explosion blasts
+		for (Vector2 b : blasts) {
+			blast_sprite.setPosition(b.x, b.y);
+			blast_sprite.draw(batch);
+		}
+		
+		// Render the tilemap particles
+		map.renderParticles(batch);
 		
 		// Render pickups
 		for (Pickup p : pickups) {
@@ -97,6 +134,8 @@ public class Level {
 	
 	// Dispose of stuff when finished
 	public void dispose() {
+		blast_tex.dispose();
+		background_tex.dispose();
 		map.dispose();
 		for (Pickup p : pickups) {
 			p.dispose();
