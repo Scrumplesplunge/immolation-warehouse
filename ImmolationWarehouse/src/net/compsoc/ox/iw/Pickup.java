@@ -27,9 +27,11 @@ public class Pickup {
 	
 	// State of this pickup
 	String imagename = "";			// WITHOUT extension (png assumed)
+	GamePickupType type;
 	
 	// Accessors
 	public AABB getAABB() { return aabb; }
+	public GamePickupType getType() { return type; }
 	
 	// Constructor
 	public Pickup(GamePickupType type, float posX, float posY) {
@@ -41,6 +43,9 @@ public class Pickup {
 		default:
 			break;
 		}
+		
+		// Note pickup type
+		this.type = type;
 		
 		// Note pickup position
 		this.posX = posX;
