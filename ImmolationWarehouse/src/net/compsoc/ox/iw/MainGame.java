@@ -89,7 +89,7 @@ public class MainGame implements ApplicationListener {
 		barBatch = new SpriteBatch();
 		
 		currentLevel = LevelFile.loadLevel("demolevel");
-		//currentLevel = new Level(ProceduralLevelGenerator.generateLevel(20,20), "proclevel");
+		//currentLevel = new Level(ProceduralLevelGenerator.generateLevel(40,30), "proclevel");
 		player = new Player(currentLevel);
 		
 		//Font!
