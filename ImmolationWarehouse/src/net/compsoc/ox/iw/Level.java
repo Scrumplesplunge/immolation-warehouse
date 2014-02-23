@@ -129,6 +129,11 @@ public class Level {
 			n.update(delta);
 		}
 		
+		// Remove dead NPCs.
+		for (int i = npcs.size(); i-- > 0;) {
+			if (npcs.get(i).dead) npcs.remove(i);
+		}
+		
 		// Check for player intersections.
 		AABB ply = MainGame.player.getAABB();
 		for (NPC n : npcs) {
