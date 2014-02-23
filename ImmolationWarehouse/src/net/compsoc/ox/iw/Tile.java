@@ -214,6 +214,7 @@ public class Tile {
 		if (destructable) {
 			solid = false;
 			destructable = false;
+			texture.dispose();
 			setImage(imagename + "_broken.png");
 			if (type == GameTileType.Barrel) exploding = true;
 		}
